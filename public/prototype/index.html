@@ -2105,15 +2105,21 @@ function logoutUser() {
   currentUser = null;
   localStorage.removeItem('currentUser');
 
-  // clear ALL user-related stored data
+  // clear stored data
   localStorage.removeItem('orders');
   localStorage.removeItem('savedDeals');
   localStorage.removeItem('cart');
 
-  // reset in-memory data if they exist
+  // reset in-memory data
   if (typeof orders !== 'undefined') orders = [];
   if (typeof savedDeals !== 'undefined') savedDeals = [];
   if (typeof cart !== 'undefined') cart = [];
+
+  // 🔥 FORCE UI RESET
+  const ordersContainer = document.getElementById('ordersSection');
+  if (ordersContainer) {
+    ordersContainer.innerHTML = '<p style="padding:20px;">No orders yet.</p>';
+  }
 
   updateUIForRole();
   closeAuthModal();
