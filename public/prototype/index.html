@@ -2100,13 +2100,25 @@
       }
     }
 
-    function logoutUser() {
-      currentUser = null;
-      saveCurrentUser();
-      updateUIForRole();
-      closeAuthModal();
-      showHomeView();
-    }
+function logoutUser() {
+  // clear user
+  currentUser = null;
+  localStorage.removeItem('currentUser');
+
+  // clear ALL user-related stored data
+  localStorage.removeItem('orders');
+  localStorage.removeItem('savedDeals');
+  localStorage.removeItem('cart');
+
+  // reset in-memory data if they exist
+  if (typeof orders !== 'undefined') orders = [];
+  if (typeof savedDeals !== 'undefined') savedDeals = [];
+  if (typeof cart !== 'undefined') cart = [];
+
+  updateUIForRole();
+  closeAuthModal();
+  showHomeView();
+}
 
     function openPostForm() {
       if (!currentUser || currentUser.role !== 'restaurant') {
