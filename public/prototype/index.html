@@ -1939,6 +1939,7 @@
 alert("submitCheckout fired");    
   cleanupCart();
       const cart = getCart();
+alert("cart length: " + cart.length);
       if (cart.length === 0) {
         alert('Your cart is empty.');
         return;
