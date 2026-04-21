@@ -2016,7 +2016,23 @@
       document.getElementById('checkoutName').value = '';
       document.getElementById('checkoutPhone').value = '';
       document.getElementById('checkoutNotes').value = '';
+closeCheckout();
 
+// 🔥 SHOW CONFIRMATION
+const content = document.getElementById('orderConfirmationContent');
+
+content.innerHTML = `
+  <p><strong>Order #${order.id}</strong></p>
+  <p>${order.items.length} item(s)</p>
+  <p>Total: $${order.total}</p>
+  <p>Pickup ready at:</p>
+  <ul>
+    ${order.items.map(item => `<li>${item.name} - ${item.place}</li>`).join('')}
+  </ul>
+`;
+
+document.getElementById('orderConfirmationModal').style.display = 'flex';
+	
       closeCheckout();
       closeDetails();
       renderDeals();
