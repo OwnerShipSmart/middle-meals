@@ -1726,8 +1726,7 @@
     }
 
     function showDashboardOrAuth() {
-    currentUser = loadData('currentUser', null); 
- if (!currentUser) {
+      if (!currentUser) {
         openAuthModal();
         return;
       }
@@ -2082,7 +2081,7 @@
         role,
         restaurantName: role === 'restaurant' ? restaurantName : ''
       };
-	saveData('currentUser', currentUser);
+
       saveCurrentUser();
       updateUIForRole();
       closeAuthModal();
@@ -2646,15 +2645,7 @@
       if (event.target === authModal) closeAuthModal();
       if (event.target === orderConfirmationModal) closeOrderConfirmation();
     };
-// --- LOCAL STORAGE SETUP ---
-function saveData(key, data) {
-  localStorage.setItem(key, JSON.stringify(data));
-}
 
-function loadData(key, defaultValue) {
-  const stored = localStorage.getItem(key);
-  return stored ? JSON.parse(stored) : defaultValue;
-}
     init();
   </script>
 </body>
