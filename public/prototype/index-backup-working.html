@@ -1,0 +1,2652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Middle Meals - Hamilton</title>
+  <style>
+    :root {
+      --bg: #f7f4f4;
+      --surface: #ffffff;
+      --surface-soft: #fff8f8;
+      --border: #efdfdf;
+      --text: #1b1515;
+      --muted: #745f5f;
+      --brand-dark: #7f1d1d;
+      --brand: #b91c1c;
+      --brand-bright: #e11d48;
+      --brand-soft: #fde2e2;
+      --success: #166534;
+      --success-soft: #dcfce7;
+      --warning: #92400e;
+      --warning-soft: #fef3c7;
+      --danger: #dc2626;
+      --danger-soft: #fee2e2;
+      --shadow: 0 10px 28px rgba(73, 25, 25, 0.08);
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+      --radius-sm: 10px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding-bottom: 96px;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      border: none;
+      cursor: pointer;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255,255,255,0.96);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .topbar {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      min-height: 52px;
+    }
+
+    .brand img {
+      height: 50px;
+      width: auto;
+      object-fit: contain;
+      display: block;
+      border-radius: 10px;
+      background: white;
+    }
+
+    .brand-fallback {
+      display: none;
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--brand-dark);
+      letter-spacing: -0.5px;
+    }
+
+    .brand-fallback span {
+      color: var(--brand-bright);
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .user-chip {
+      background: var(--surface-soft);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 10px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--brand-dark);
+      max-width: 220px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .icon-btn,
+    .btn {
+      border-radius: 12px;
+      font-weight: 700;
+      transition: transform 0.15s ease, opacity 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .icon-btn:hover,
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .icon-btn:disabled,
+    .btn:disabled,
+    .reserve-btn:disabled,
+    .cart-btn:disabled,
+    .details-btn:disabled,
+    .inline-btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .icon-btn {
+      width: 42px;
+      height: 42px;
+      background: var(--surface-soft);
+      color: var(--brand);
+      border: 1px solid var(--border);
+      font-size: 18px;
+    }
+
+    .btn {
+      padding: 12px 16px;
+      font-size: 14px;
+    }
+
+    .btn-dark {
+      background: var(--brand-dark);
+      color: white;
+    }
+
+    .btn-brand {
+      background: var(--brand-bright);
+      color: white;
+    }
+
+    .btn-light {
+      background: #f3f4f6;
+      color: var(--text);
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      color: white;
+    }
+
+    .btn-outline {
+      background: white;
+      color: var(--brand-dark);
+      border: 1px solid var(--border);
+    }
+
+    main section {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 20px 16px 24px;
+    }
+
+    .hero-box {
+      background: linear-gradient(135deg, var(--brand-dark) 0%, var(--brand-bright) 100%);
+      color: white;
+      border-radius: var(--radius-xl);
+      padding: 24px 20px;
+      box-shadow: 0 14px 34px rgba(127, 29, 29, 0.22);
+    }
+
+    .hero-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .hero-box h1 {
+      margin: 0 0 8px;
+      font-size: 36px;
+      line-height: 1.06;
+      max-width: 700px;
+    }
+
+    .hero-box p {
+      margin: 0;
+      color: #ffe3e3;
+      max-width: 700px;
+      line-height: 1.45;
+    }
+
+    .city-pill,
+    .role-pill,
+    .info-pill,
+    .count-pill,
+    .order-status,
+    .deal-chip,
+    .deal-type,
+    .stat-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 8px 10px;
+      white-space: nowrap;
+    }
+
+    .city-pill {
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: white;
+    }
+
+    .role-pill,
+    .info-pill,
+    .stat-pill {
+      background: var(--surface-soft);
+      color: var(--brand-dark);
+      border: 1px solid var(--border);
+    }
+
+    .count-pill {
+      background: var(--brand-soft);
+      color: var(--brand);
+    }
+
+    .deal-chip {
+      background: var(--success-soft);
+      color: var(--success);
+    }
+
+    .deal-type {
+      background: var(--brand-soft);
+      color: var(--brand);
+    }
+
+    .order-status.ready {
+      background: var(--success-soft);
+      color: var(--success);
+    }
+
+    .order-status.picked-up {
+      background: #e0e7ff;
+      color: #3730a3;
+    }
+
+    .order-status.cancelled {
+      background: var(--danger-soft);
+      color: var(--danger);
+    }
+
+    .search-row {
+      margin-top: 18px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .search-box,
+    .text-input,
+    .select-input,
+    .textarea-input,
+    .date-input {
+      width: 100%;
+      border: 1px solid #ddd;
+      border-radius: 14px;
+      padding: 13px 14px;
+      background: white;
+      color: var(--text);
+      outline: none;
+    }
+
+    .search-box:focus,
+    .text-input:focus,
+    .select-input:focus,
+    .textarea-input:focus,
+    .date-input:focus {
+      border-color: #e7a8b7;
+      box-shadow: 0 0 0 4px rgba(225, 29, 72, 0.08);
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 220px;
+      border: none;
+    }
+
+    .section-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .section-title {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--brand-dark);
+      letter-spacing: -0.5px;
+    }
+
+    .small-note {
+      font-size: 14px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .panel,
+    .home-card,
+    .stat-card,
+    .dashboard-list,
+    .orders-list,
+    .confirmation-box,
+    .list-card,
+    .summary-card,
+    .profile-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .home-grid,
+    .dashboard-grid,
+    .summary-grid,
+    .profile-grid,
+    .report-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .home-grid {
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      margin-top: 18px;
+    }
+
+    .dashboard-grid,
+    .summary-grid,
+    .report-grid {
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    .profile-grid {
+      grid-template-columns: 1.2fr 1fr;
+    }
+
+    .home-card h3,
+    .profile-card h3,
+    .list-card h3,
+    .orders-list h3,
+    .dashboard-list h3 {
+      margin: 0 0 8px;
+      font-size: 22px;
+      color: var(--brand-dark);
+    }
+
+    .home-card p,
+    .profile-card p,
+    .list-meta,
+    .panel p {
+      margin: 0;
+      color: #5d4f4f;
+      line-height: 1.45;
+    }
+
+    .stack {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .categories,
+    .sort-row,
+    .filter-row,
+    .inline-row,
+    .card-actions,
+    .dashboard-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .categories {
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .pill {
+      border: 1px solid var(--border);
+      background: white;
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--brand-dark);
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .pill.active {
+      background: var(--brand-dark);
+      color: white;
+      border-color: var(--brand-dark);
+    }
+
+    .deal-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(285px, 1fr));
+      gap: 18px;
+    }
+
+    .deal-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+    }
+
+    .deal-card.sold-out {
+      opacity: 0.76;
+      filter: grayscale(0.12);
+    }
+
+    .deal-image-wrap {
+      position: relative;
+    }
+
+    .deal-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      display: block;
+      background: #eadede;
+    }
+
+    .favorite-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.96);
+      font-size: 18px;
+      border: 1px solid rgba(255,255,255,0.7);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    }
+
+    .favorite-btn.active {
+      color: var(--brand-bright);
+    }
+
+    .floating-badges {
+      position: absolute;
+      left: 12px;
+      right: 12px;
+      bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .urgency-badge,
+    .sold-badge,
+    .distance-badge {
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-size: 12px;
+      font-weight: 800;
+      backdrop-filter: blur(6px);
+    }
+
+    .urgency-badge {
+      background: rgba(127, 29, 29, 0.92);
+      color: white;
+    }
+
+    .distance-badge {
+      background: rgba(255,255,255,0.9);
+      color: var(--brand-dark);
+    }
+
+    .sold-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: var(--danger);
+      color: white;
+    }
+
+    .deal-content {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+    }
+
+    .deal-row-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .deal-title {
+      font-size: 22px;
+      font-weight: 800;
+      line-height: 1.12;
+      color: var(--brand-dark);
+      letter-spacing: -0.4px;
+    }
+
+    .deal-place {
+      font-size: 15px;
+      font-weight: 700;
+      color: #252020;
+    }
+
+    .deal-desc,
+    .deal-pickup,
+    .deal-meta-line {
+      font-size: 14px;
+      color: #5f5555;
+      line-height: 1.45;
+    }
+
+    .deal-price-block {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .deal-old-price,
+    .details-old-price {
+      color: #8e8a8a;
+      font-size: 13px;
+      text-decoration: line-through;
+    }
+
+    .deal-price,
+    .details-price {
+      font-size: 26px;
+      font-weight: 800;
+      color: #121212;
+    }
+
+    .deal-savings,
+    .details-savings {
+      color: var(--brand-bright);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .deal-stock,
+    .details-stock {
+      font-size: 13px;
+      font-weight: 700;
+      color: #494141;
+    }
+
+    .deal-footer {
+      margin-top: auto;
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: flex-end;
+      flex-wrap: wrap;
+    }
+
+    .deal-buttons {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .reserve-btn,
+    .details-btn,
+    .cart-btn,
+    .inline-btn {
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-weight: 700;
+    }
+
+    .reserve-btn {
+      background: var(--brand-bright);
+      color: white;
+    }
+
+    .details-btn,
+    .inline-btn.light {
+      background: #f3f4f6;
+      color: var(--text);
+    }
+
+    .cart-btn,
+    .inline-btn.dark {
+      background: var(--brand-dark);
+      color: white;
+    }
+
+    .inline-btn.brand {
+      background: var(--brand-bright);
+      color: white;
+    }
+
+    .inline-btn.danger {
+      background: var(--danger-soft);
+      color: var(--danger);
+    }
+
+    .empty-state {
+      display: none;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 30px;
+      text-align: center;
+      color: var(--muted);
+      box-shadow: var(--shadow);
+    }
+
+    .list-item,
+    .order-item,
+    .cart-item,
+    .posted-item,
+    .activity-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 0;
+      border-top: 1px solid #f0ecec;
+      flex-wrap: wrap;
+    }
+
+    .list-item:first-of-type,
+    .order-item:first-of-type,
+    .cart-item:first-of-type,
+    .posted-item:first-of-type,
+    .activity-item:first-of-type {
+      border-top: none;
+      padding-top: 0;
+    }
+
+    .list-main,
+    .order-main,
+    .cart-main,
+    .posted-main,
+    .activity-main {
+      flex: 1;
+      min-width: 220px;
+    }
+
+    .list-title,
+    .order-title,
+    .cart-title,
+    .posted-title,
+    .activity-title {
+      font-weight: 800;
+      color: var(--brand-dark);
+      margin-bottom: 4px;
+    }
+
+    .list-sub,
+    .order-sub,
+    .cart-sub,
+    .posted-sub,
+    .activity-sub {
+      color: #666;
+      line-height: 1.4;
+      font-size: 14px;
+    }
+
+    .list-side,
+    .order-price,
+    .cart-price,
+    .posted-price,
+    .activity-side {
+      font-weight: 800;
+      white-space: nowrap;
+      color: #222;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(17, 10, 10, 0.5);
+      z-index: 100;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 620px;
+      max-height: 90vh;
+      overflow: auto;
+      background: white;
+      border-radius: 22px;
+      border: 1px solid var(--border);
+      padding: 22px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.16);
+    }
+
+    .modal-box h2 {
+      margin: 0 0 16px;
+      color: var(--brand-dark);
+      font-size: 30px;
+      letter-spacing: -0.6px;
+    }
+
+    .modal-box h3 {
+      margin: 0 0 10px;
+      color: var(--brand-dark);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--brand-dark);
+    }
+
+    .textarea-input {
+      resize: vertical;
+      min-height: 90px;
+    }
+
+    .details-image {
+      width: 100%;
+      height: 250px;
+      border-radius: 18px;
+      object-fit: cover;
+      background: #eadede;
+      margin-bottom: 16px;
+    }
+
+    .details-line {
+      margin-bottom: 10px;
+      color: #4c4242;
+      line-height: 1.45;
+    }
+
+    .cart-total,
+    .checkout-total {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px solid #efefef;
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--brand-dark);
+    }
+
+    .confirmation-code {
+      display: inline-block;
+      background: var(--brand-dark);
+      color: white;
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-weight: 800;
+      letter-spacing: 0.6px;
+      margin: 8px 0 12px;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255,255,255,0.98);
+      backdrop-filter: blur(8px);
+      border-top: 1px solid var(--border);
+      z-index: 70;
+      display: flex;
+      justify-content: center;
+    }
+
+    .bottom-nav-inner {
+      width: 100%;
+      max-width: 760px;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+    }
+
+    .nav-item {
+      padding: 12px 8px;
+      text-align: center;
+      font-size: 12px;
+      color: #7a5555;
+      font-weight: 700;
+      cursor: pointer;
+      background: transparent;
+      border-radius: 0;
+    }
+
+    .nav-item.active {
+      color: var(--brand);
+    }
+
+    .nav-icon {
+      display: block;
+      font-size: 20px;
+      margin-bottom: 4px;
+    }
+
+    .banner {
+      border-radius: 18px;
+      padding: 14px 16px;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .banner.brand {
+      background: var(--brand-soft);
+      color: var(--brand-dark);
+    }
+
+    .banner.success {
+      background: var(--success-soft);
+      color: var(--success);
+    }
+
+    .banner.warning {
+      background: var(--warning-soft);
+      color: var(--warning);
+    }
+
+    @media (max-width: 860px) {
+      .profile-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 700px) {
+      body {
+        padding-bottom: 92px;
+      }
+
+      .hero-box h1 {
+        font-size: 30px;
+      }
+
+      .brand img {
+        height: 42px;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .deal-footer {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .deal-buttons {
+        width: 100%;
+      }
+
+      .reserve-btn,
+      .details-btn,
+      .cart-btn,
+      .inline-btn {
+        flex: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="topbar">
+      <div class="brand" onclick="showHomeView()" aria-label="Middle Meals home">
+        <img src="/prototype/logo.png" alt="Middle Meals logo" onerror="handleLogoError(this)">
+        <div class="brand-fallback" id="brandFallback">Middle <span>Meals</span></div>
+      </div>
+
+      <div class="top-actions">
+        <div class="user-chip" id="userChip">Guest</div>
+        <button class="icon-btn" onclick="showSavedView()" aria-label="Saved deals">❤</button>
+        <button class="icon-btn" onclick="openCart()" aria-label="Cart">🛒</button>
+        <button class="btn btn-dark" id="accountBtn" onclick="openAuthModal()">Login</button>
+        <button class="btn btn-brand hidden" id="postDealBtn" onclick="openPostForm()">Post a Deal</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="homeSection">
+      <div class="hero-box">
+        <div class="hero-top">
+          <div>
+            <h1>Save money. Save food. Pick up local deals before they disappear.</h1>
+            <p>Middle Meals helps customers grab discounted food and helps restaurants move extra inventory fast with one clean local marketplace.</p>
+          </div>
+          <div class="stack" style="gap:10px; align-items:flex-end;">
+            <div class="city-pill">📍 Hamilton, Ontario</div>
+            <div class="city-pill" id="homeRolePill">Local pickup marketplace</div>
+          </div>
+        </div>
+
+        <div class="search-row">
+          <button class="btn btn-brand" onclick="showBrowseView()">Browse Deals</button>
+          <button class="btn btn-light" onclick="showSavedView()">Saved Deals</button>
+          <button class="btn btn-dark" onclick="showDashboardOrAuth()">My Account</button>
+        </div>
+      </div>
+
+      <div class="home-grid">
+        <div class="home-card">
+          <h3>For customers</h3>
+          <p>Find bakery bags, restaurant meals, grocery bundles, and same-day rescue deals before they are gone.</p>
+          <div class="card-actions" style="margin-top:14px;">
+            <button class="btn btn-dark" onclick="showBrowseView()">Start Browsing</button>
+          </div>
+        </div>
+
+        <div class="home-card">
+          <h3>For restaurants</h3>
+          <p>Post extra food, set quantity, edit deals, track reservations, and turn waste into revenue fast.</p>
+          <div class="card-actions" style="margin-top:14px;">
+            <button class="btn btn-brand" onclick="openAuthModal('restaurant')">Restaurant Login</button>
+          </div>
+        </div>
+
+        <div class="home-card">
+          <h3>Saved picks</h3>
+          <p>Tap the heart on any deal and keep your favorite spots in one place for quicker pickup later.</p>
+          <div class="card-actions" style="margin-top:14px;">
+            <button class="btn btn-outline" onclick="showSavedView()">View Saved</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="summary-grid" style="margin-top:18px;">
+        <div class="summary-card">
+          <div class="section-title-row" style="margin-bottom:10px;">
+            <div class="section-title" style="font-size:22px;">How this build works</div>
+          </div>
+          <p class="small-note" style="line-height:1.55; font-weight:500;">
+            This version is built to function strongly in a single HTML file using local storage. It supports customer and restaurant accounts, saved deals, cart, checkout, order history, restaurant posting, editing, deleting, and dashboard tracking.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="browseSection" class="hidden">
+      <div class="hero-box">
+        <div class="hero-top">
+          <div>
+            <h1>Hamilton deals that save food and save money.</h1>
+            <p>Browse discounted meals, bakery packs, and grocery bundles before they are gone.</p>
+          </div>
+          <div class="stack" style="gap:10px; align-items:flex-end;">
+            <div class="city-pill">📍 Hamilton, Ontario</div>
+            <div class="city-pill" id="browseViewPill">Live marketplace</div>
+          </div>
+        </div>
+
+        <div class="search-row">
+          <input id="searchInput" class="search-box" type="text" placeholder="Search meals, restaurants, stores" oninput="renderDeals()">
+          <button class="btn btn-brand" onclick="renderDeals()">Search</button>
+        </div>
+      </div>
+
+      <div class="toolbar" style="margin-top:16px;">
+        <div class="categories">
+          <button class="pill active" onclick="setCategory('All', this)">All</button>
+          <button class="pill" onclick="setCategory('Restaurant', this)">Restaurant</button>
+          <button class="pill" onclick="setCategory('Bakery', this)">Bakery</button>
+          <button class="pill" onclick="setCategory('Grocery', this)">Grocery</button>
+          <button class="pill" onclick="setCategory('Prepared', this)">Prepared Meals</button>
+        </div>
+
+        <div class="sort-row">
+          <select id="sortSelect" class="select-input" style="width:auto; min-width:180px;" onchange="renderDeals()">
+            <option value="featured">Sort: Featured</option>
+            <option value="priceLow">Price: Low to High</option>
+            <option value="priceHigh">Price: High to Low</option>
+            <option value="savingsHigh">Biggest Savings</option>
+            <option value="distanceLow">Closest First</option>
+            <option value="newest">Newest First</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="section-title-row">
+        <div>
+          <div class="section-title">Browse Deals</div>
+          <div class="small-note">Pickup only • End-of-day savings</div>
+        </div>
+        <div class="count-pill" id="resultCount">0 deals</div>
+      </div>
+
+      <div class="deal-grid" id="dealGrid"></div>
+      <div class="empty-state" id="emptyState">No deals match that search right now.</div>
+    </section>
+
+    <section id="savedSection" class="hidden">
+      <div class="section-title-row">
+        <div>
+          <div class="section-title">Saved Deals</div>
+          <div class="small-note">Your favorite picks in one place</div>
+        </div>
+        <div class="count-pill" id="savedCount">0 saved</div>
+      </div>
+
+      <div class="deal-grid" id="savedGrid"></div>
+      <div class="empty-state" id="savedEmptyState">You have no saved deals yet.</div>
+    </section>
+
+    <section id="ordersSection" class="hidden">
+      <div class="section-title-row">
+        <div>
+          <div class="section-title">My Orders</div>
+          <div class="small-note">Your pickup reservations and status history</div>
+        </div>
+        <div class="info-pill" id="ordersRolePill">Customer view</div>
+      </div>
+
+      <div class="confirmation-box hidden" id="latestConfirmationBox"></div>
+
+      <div class="orders-list" style="margin-top:16px;">
+        <h3>Reservation History</h3>
+        <div id="ordersList"></div>
+      </div>
+    </section>
+
+    <section id="restaurantDashboard" class="hidden">
+      <div class="section-title-row">
+        <div>
+          <div class="section-title">Restaurant Dashboard</div>
+          <div class="small-note">Manage your deals, revenue potential, and customer reservations</div>
+        </div>
+        <div class="role-pill" id="dashboardRestaurantName">Restaurant account</div>
+      </div>
+
+      <div class="banner brand" id="dashboardBanner">Log in as a restaurant to manage your own listed deals.</div>
+
+      <div class="dashboard-grid">
+        <div class="stat-card">
+          <div class="stat-number" id="dashActiveDeals">0</div>
+          <div class="stat-label">Active Deals</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="dashSoldOutDeals">0</div>
+          <div class="stat-label">Sold Out Deals</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="dashPotentialRevenue">$0.00</div>
+          <div class="stat-label">Potential Revenue</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="dashReservedOrders">0</div>
+          <div class="stat-label">Reservations</div>
+        </div>
+      </div>
+
+      <div class="profile-grid" style="margin-top:18px;">
+        <div class="dashboard-list">
+          <div class="section-title-row" style="margin-bottom:10px;">
+            <h3 style="margin:0;">Your Posted Deals</h3>
+            <div class="dashboard-actions">
+              <button class="btn btn-brand" onclick="openPostForm()">Create New Deal</button>
+            </div>
+          </div>
+          <div id="postedDealsList"></div>
+        </div>
+
+        <div class="stack">
+          <div class="profile-card">
+            <h3>Restaurant Profile</h3>
+            <div class="list-meta" id="restaurantProfileMeta">Log in as a restaurant to view profile details.</div>
+          </div>
+
+          <div class="profile-card">
+            <h3>Reservation Activity</h3>
+            <div id="restaurantOrdersList"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal" id="postModal">
+    <div class="modal-box">
+      <h2 id="postModalTitle">Post a Hamilton Deal</h2>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Meal Name</label>
+          <input id="dealName" class="text-input" type="text" placeholder="Example: Pizza Bundle">
+        </div>
+
+        <div class="form-group">
+          <label>Restaurant or Store</label>
+          <input id="dealPlace" class="text-input" type="text" placeholder="Example: Joe's Pizza">
+        </div>
+
+        <div class="form-group">
+          <label>Price</label>
+          <input id="dealPrice" class="text-input" type="number" step="0.01" min="0" placeholder="5.99">
+        </div>
+
+        <div class="form-group">
+          <label>Original Price</label>
+          <input id="dealOldPrice" class="text-input" type="number" step="0.01" min="0" placeholder="14.99">
+        </div>
+
+        <div class="form-group">
+          <label>Quantity Available</label>
+          <input id="dealQuantity" class="text-input" type="number" min="1" step="1" placeholder="5">
+        </div>
+
+        <div class="form-group">
+          <label>Approx. Distance</label>
+          <input id="dealDistance" class="text-input" type="text" placeholder="2.4 km away">
+        </div>
+
+        <div class="form-group">
+          <label>Pickup Window</label>
+          <input id="dealPickup" class="text-input" type="text" placeholder="Pickup by 8:00 PM">
+        </div>
+
+        <div class="form-group">
+          <label>Category</label>
+          <select id="dealCategory" class="select-input">
+            <option>Restaurant</option>
+            <option>Bakery</option>
+            <option>Grocery</option>
+            <option>Prepared</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Urgency Label</label>
+          <select id="dealUrgency" class="select-input">
+            <option>Ending Soon</option>
+            <option>Limited Quantity</option>
+            <option>Fresh Today</option>
+            <option>Popular Deal</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Image URL</label>
+          <input id="dealImageUrl" class="text-input" type="text" placeholder="https://...">
+        </div>
+
+        <div class="form-group full">
+          <label>Short Description</label>
+          <textarea id="dealDesc" class="textarea-input" placeholder="Assorted fresh items packed before closing."></textarea>
+        </div>
+      </div>
+
+      <input id="editingDealId" type="hidden">
+
+      <div class="form-actions">
+        <button class="btn btn-brand" onclick="submitDeal()" id="dealSubmitBtn">Post Deal</button>
+        <button class="btn btn-light" onclick="resetDealForm()">Clear</button>
+        <button class="btn btn-dark" onclick="closePostForm()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="detailsModal">
+    <div class="modal-box" id="detailsContent"></div>
+  </div>
+
+  <div class="modal" id="cartModal">
+    <div class="modal-box">
+      <h2>Your Cart</h2>
+      <div id="cartItems"></div>
+      <div class="cart-total">
+        <span>Total</span>
+        <span id="cartTotal">$0.00</span>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-brand" onclick="openCheckout()">Continue</button>
+        <button class="btn btn-dark" onclick="closeCart()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="checkoutModal">
+    <div class="modal-box">
+      <h2>Confirm Pickup</h2>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Your Name</label>
+          <input id="checkoutName" class="text-input" type="text" placeholder="Enter your full name">
+        </div>
+
+        <div class="form-group">
+          <label>Phone Number</label>
+          <input id="checkoutPhone" class="text-input" type="text" placeholder="Enter your phone number">
+        </div>
+
+        <div class="form-group full">
+          <label>Pickup Notes</label>
+          <textarea id="checkoutNotes" class="textarea-input" placeholder="Optional notes for pickup"></textarea>
+        </div>
+      </div>
+
+      <div id="checkoutSummary" class="panel" style="margin-top:12px;"></div>
+
+      <div class="form-actions">
+        <button class="btn btn-brand" onclick="submitCheckout()">Reserve Pickup</button>
+        <button class="btn btn-dark" onclick="closeCheckout()">Back</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="orderConfirmationModal">
+    <div class="modal-box">
+      <h2>Order Confirmed</h2>
+      <div id="orderConfirmationContent"></div>
+      <div class="form-actions">
+        <button class="btn btn-brand" onclick="closeOrderConfirmation(); showOrdersView();">View My Orders</button>
+        <button class="btn btn-dark" onclick="closeOrderConfirmation()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="authModal">
+    <div class="modal-box">
+      <h2>Account</h2>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Name</label>
+          <input id="authName" class="text-input" type="text" placeholder="Your name">
+        </div>
+
+        <div class="form-group">
+          <label>Email</label>
+          <input id="authEmail" class="text-input" type="email" placeholder="name@email.com">
+        </div>
+
+        <div class="form-group">
+          <label>Phone</label>
+          <input id="authPhone" class="text-input" type="text" placeholder="Optional phone number">
+        </div>
+
+        <div class="form-group">
+          <label>Role</label>
+          <select id="authRole" class="select-input">
+            <option value="customer">Customer</option>
+            <option value="restaurant">Restaurant</option>
+          </select>
+        </div>
+
+        <div class="form-group full">
+          <label>Restaurant Name</label>
+          <input id="authRestaurantName" class="text-input" type="text" placeholder="Only needed for restaurant accounts">
+        </div>
+      </div>
+
+      <div class="banner warning" id="authHint">Customer accounts can save deals and reserve pickups. Restaurant accounts can post and manage listings.</div>
+
+      <div class="form-actions">
+        <button class="btn btn-brand" onclick="saveAuth()">Save Account</button>
+        <button class="btn btn-dark" onclick="closeAuthModal()">Close</button>
+        <button class="btn btn-danger hidden" id="logoutBtn" onclick="logoutUser()">Logout</button>
+      </div>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <div class="bottom-nav-inner">
+      <button class="nav-item active" id="navHome" onclick="showHomeView()"><span class="nav-icon">🏠</span>Home</button>
+      <button class="nav-item" id="navBrowse" onclick="showBrowseView()"><span class="nav-icon">🔎</span>Browse</button>
+      <button class="nav-item" id="navSaved" onclick="showSavedView()"><span class="nav-icon">❤</span>Saved</button>
+      <button class="nav-item" id="navOrders" onclick="showOrdersView()"><span class="nav-icon">📦</span>Orders</button>
+      <button class="nav-item" id="navAccount" onclick="showDashboardOrAuth()"><span class="nav-icon">👤</span>Account</button>
+    </div>
+  </nav>
+
+  <script>
+    const STORAGE_KEYS = {
+      deals: 'middleMealsDealsV2',
+      favoritesByUser: 'middleMealsFavoritesByUserV2',
+      cartsByUser: 'middleMealsCartsByUserV2',
+      orders: 'middleMealsOrdersV2',
+      currentUser: 'middleMealsCurrentUserV2'
+    };
+
+    let selectedCategory = 'All';
+    let currentView = 'home';
+    let currentUser = null;
+
+    let deals = [
+      {
+        id: 1,
+        name: 'Deep Dish Rescue Box',
+        place: 'Chicago Style Pizza Shack',
+        price: 7.99,
+        oldPrice: 18.99,
+        pickup: 'Pickup by 9:15 PM',
+        category: 'Restaurant',
+        desc: 'Assorted slices and sides packed near close for a quick pickup.',
+        image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=1200&q=80',
+        distance: '4.2 km away',
+        distanceValue: 4.2,
+        urgency: 'Ending Soon',
+        postedByUser: false,
+        ownerEmail: 'seed@middlemeals.app',
+        ownerName: 'Middle Meals Seed',
+        ownerRestaurantName: 'Chicago Style Pizza Shack',
+        quantity: 4,
+        remaining: 4,
+        createdAt: new Date('2026-04-10T09:00:00').toISOString()
+      },
+      {
+        id: 2,
+        name: 'Butter Chicken Dinner Bag',
+        place: 'India Village Restaurant',
+        price: 8.5,
+        oldPrice: 19.5,
+        pickup: 'Pickup by 8:45 PM',
+        category: 'Prepared',
+        desc: 'Prepared dinner deal with rice and fresh sides for a fast pickup.',
+        image: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?auto=format&fit=crop&w=1200&q=80',
+        distance: '6.1 km away',
+        distanceValue: 6.1,
+        urgency: 'Popular Deal',
+        postedByUser: false,
+        ownerEmail: 'seed@middlemeals.app',
+        ownerName: 'Middle Meals Seed',
+        ownerRestaurantName: 'India Village Restaurant',
+        quantity: 3,
+        remaining: 3,
+        createdAt: new Date('2026-04-10T09:10:00').toISOString()
+      },
+      {
+        id: 3,
+        name: 'Asian Takeout Combo',
+        place: 'Banana Leaf Asian Cuisine',
+        price: 6.99,
+        oldPrice: 16.99,
+        pickup: 'Pickup by 7:40 PM',
+        category: 'Prepared',
+        desc: 'Chef-packed combo with rice, vegetables, and rotating hot items.',
+        image: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=1200&q=80',
+        distance: '7.3 km away',
+        distanceValue: 7.3,
+        urgency: 'Limited Quantity',
+        postedByUser: false,
+        ownerEmail: 'seed@middlemeals.app',
+        ownerName: 'Middle Meals Seed',
+        ownerRestaurantName: 'Banana Leaf Asian Cuisine',
+        quantity: 2,
+        remaining: 2,
+        createdAt: new Date('2026-04-10T09:20:00').toISOString()
+      },
+      {
+        id: 4,
+        name: 'Community Bakery Bag',
+        place: '541 | Eatery & Exchange',
+        price: 4.99,
+        oldPrice: 12.99,
+        pickup: 'Pickup by 5:45 PM',
+        category: 'Bakery',
+        desc: 'Fresh baked extras, pastries, and end-of-day café items.',
+        image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1200&q=80',
+        distance: '3.5 km away',
+        distanceValue: 3.5,
+        urgency: 'Fresh Today',
+        postedByUser: false,
+        ownerEmail: 'seed@middlemeals.app',
+        ownerName: 'Middle Meals Seed',
+        ownerRestaurantName: '541 | Eatery & Exchange',
+        quantity: 5,
+        remaining: 5,
+        createdAt: new Date('2026-04-10T09:30:00').toISOString()
+      },
+      {
+        id: 5,
+        name: 'Produce Saver Box',
+        place: 'FreshMart Hamilton',
+        price: 5.99,
+        oldPrice: 14.99,
+        pickup: 'Pickup by 8:00 PM',
+        category: 'Grocery',
+        desc: 'Mixed fruit and vegetables bundled before they get tossed.',
+        image: 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1200&q=80',
+        distance: '2.0 km away',
+        distanceValue: 2,
+        urgency: 'Fresh Today',
+        postedByUser: false,
+        ownerEmail: 'seed@middlemeals.app',
+        ownerName: 'Middle Meals Seed',
+        ownerRestaurantName: 'FreshMart Hamilton',
+        quantity: 6,
+        remaining: 6,
+        createdAt: new Date('2026-04-10T09:40:00').toISOString()
+      },
+      {
+        id: 6,
+        name: 'Sandwich & Soup Bundle',
+        place: 'Saint James Espresso Bar & Eatery',
+        price: 6.5,
+        oldPrice: 15.5,
+        pickup: 'Pickup by 4:30 PM',
+        category: 'Prepared',
+        desc: 'A simple lunch rescue bundle with rotating café favourites.',
+        image: 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=1200&q=80',
+        distance: '3.9 km away',
+        distanceValue: 3.9,
+        urgency: 'Ending Soon',
+        postedByUser: false,
+        ownerEmail: 'seed@middlemeals.app',
+        ownerName: 'Middle Meals Seed',
+        ownerRestaurantName: 'Saint James Espresso Bar & Eatery',
+        quantity: 3,
+        remaining: 3,
+        createdAt: new Date('2026-04-10T09:50:00').toISOString()
+      }
+    ];
+
+    let favoritesByUser = {};
+    let cartsByUser = {};
+    let orders = [];
+
+    function handleLogoError(img) {
+      img.style.display = 'none';
+      const fallback = document.getElementById('brandFallback');
+      if (fallback) fallback.style.display = 'block';
+    }
+
+    function loadState() {
+      const savedDeals = localStorage.getItem(STORAGE_KEYS.deals);
+      if (savedDeals) {
+        deals = JSON.parse(savedDeals);
+      }
+
+      const savedFavorites = localStorage.getItem(STORAGE_KEYS.favoritesByUser);
+      if (savedFavorites) {
+        favoritesByUser = JSON.parse(savedFavorites);
+      }
+
+      const savedCarts = localStorage.getItem(STORAGE_KEYS.cartsByUser);
+      if (savedCarts) {
+        cartsByUser = JSON.parse(savedCarts);
+      }
+
+      const savedOrders = localStorage.getItem(STORAGE_KEYS.orders);
+      if (savedOrders) {
+        orders = JSON.parse(savedOrders);
+      }
+
+      const savedCurrentUser = localStorage.getItem(STORAGE_KEYS.currentUser);
+      if (savedCurrentUser) {
+        currentUser = JSON.parse(savedCurrentUser);
+      }
+
+      normalizeDeals();
+      saveDeals();
+    }
+
+    function normalizeDeals() {
+      deals = deals.map((deal) => {
+        const quantity = Number(deal.quantity || 1);
+        const remaining = Number(deal.remaining !== undefined ? deal.remaining : quantity);
+        const distanceValue = typeof deal.distanceValue === 'number'
+          ? deal.distanceValue
+          : parseFloat(String(deal.distance || '').replace(/[^\d.]/g, '')) || 99;
+
+        return {
+          ...deal,
+          quantity: quantity > 0 ? quantity : 1,
+          remaining: remaining >= 0 ? remaining : 0,
+          distanceValue,
+          ownerEmail: deal.ownerEmail || 'seed@middlemeals.app',
+          ownerName: deal.ownerName || 'Unknown',
+          ownerRestaurantName: deal.ownerRestaurantName || deal.place,
+          createdAt: deal.createdAt || new Date().toISOString()
+        };
+      });
+    }
+
+    function saveDeals() {
+      localStorage.setItem(STORAGE_KEYS.deals, JSON.stringify(deals));
+    }
+
+    function saveFavoritesByUser() {
+      localStorage.setItem(STORAGE_KEYS.favoritesByUser, JSON.stringify(favoritesByUser));
+    }
+
+    function saveCartsByUser() {
+      localStorage.setItem(STORAGE_KEYS.cartsByUser, JSON.stringify(cartsByUser));
+    }
+
+    function saveOrders() {
+      localStorage.setItem(STORAGE_KEYS.orders, JSON.stringify(orders));
+    }
+
+    function saveCurrentUser() {
+      if (currentUser) {
+        localStorage.setItem(STORAGE_KEYS.currentUser, JSON.stringify(currentUser));
+      } else {
+        localStorage.removeItem(STORAGE_KEYS.currentUser);
+      }
+    }
+
+    function getUserKey() {
+      return currentUser?.email || '__guest__';
+    }
+
+    function getFavorites() {
+      return favoritesByUser[getUserKey()] || [];
+    }
+
+    function setFavorites(list) {
+      favoritesByUser[getUserKey()] = list;
+      saveFavoritesByUser();
+    }
+
+    function getCart() {
+      return cartsByUser[getUserKey()] || [];
+    }
+
+    function setCart(list) {
+      cartsByUser[getUserKey()] = list;
+      saveCartsByUser();
+    }
+
+    function cleanupCart() {
+      const cart = getCart().filter((id) => {
+        const deal = deals.find((d) => d.id === id);
+        return deal && !isSoldOut(deal);
+      });
+      setCart(cart);
+    }
+
+    function isSoldOut(deal) {
+      return Number(deal.remaining) <= 0;
+    }
+
+    function getSavings(deal) {
+      return Math.max(0, Number(deal.oldPrice) - Number(deal.price));
+    }
+
+    function formatMoney(value) {
+      return '$' + Number(value).toFixed(2);
+    }
+
+    function formatDateTime(value) {
+      try {
+        return new Date(value).toLocaleString();
+      } catch {
+        return value;
+      }
+    }
+
+    function generateOrderCode() {
+      const randomPart = Math.floor(1000 + Math.random() * 9000);
+      const letters = Math.random().toString(36).slice(2, 4).toUpperCase();
+      return `MM-${letters}${randomPart}`;
+    }
+
+    function setActiveNav(id) {
+      document.querySelectorAll('.nav-item').forEach((item) => item.classList.remove('active'));
+      const target = document.getElementById(id);
+      if (target) target.classList.add('active');
+    }
+
+    function hideAllViews() {
+      ['homeSection', 'browseSection', 'savedSection', 'ordersSection', 'restaurantDashboard'].forEach((id) => {
+        document.getElementById(id).classList.add('hidden');
+      });
+    }
+
+    function updateUIForRole() {
+      const userChip = document.getElementById('userChip');
+      const accountBtn = document.getElementById('accountBtn');
+      const postDealBtn = document.getElementById('postDealBtn');
+      const logoutBtn = document.getElementById('logoutBtn');
+      const homeRolePill = document.getElementById('homeRolePill');
+      const browseViewPill = document.getElementById('browseViewPill');
+      const ordersRolePill = document.getElementById('ordersRolePill');
+
+      if (!currentUser) {
+        userChip.textContent = 'Guest';
+        accountBtn.textContent = 'Login';
+        postDealBtn.classList.add('hidden');
+        logoutBtn.classList.add('hidden');
+        homeRolePill.textContent = 'Local pickup marketplace';
+        browseViewPill.textContent = 'Live marketplace';
+        ordersRolePill.textContent = 'Customer view';
+        return;
+      }
+
+      const roleName = currentUser.role === 'restaurant' ? 'Restaurant' : 'Customer';
+      userChip.textContent = `${currentUser.name} • ${roleName}`;
+      accountBtn.textContent = 'Account';
+      logoutBtn.classList.remove('hidden');
+      postDealBtn.classList.toggle('hidden', currentUser.role !== 'restaurant');
+      homeRolePill.textContent = currentUser.role === 'restaurant'
+        ? `Restaurant mode • ${currentUser.restaurantName || currentUser.name}`
+        : 'Customer mode • Ready to reserve';
+      browseViewPill.textContent = currentUser.role === 'restaurant'
+        ? 'Browse what customers see'
+        : 'Live marketplace';
+      ordersRolePill.textContent = currentUser.role === 'restaurant' ? 'Restaurant can still view customer-side orders' : 'Customer view';
+    }
+
+    function showHomeView() {
+      currentView = 'home';
+      hideAllViews();
+      document.getElementById('homeSection').classList.remove('hidden');
+      setActiveNav('navHome');
+    }
+
+    function showBrowseView() {
+      currentView = 'browse';
+      hideAllViews();
+      document.getElementById('browseSection').classList.remove('hidden');
+      setActiveNav('navBrowse');
+      renderDeals();
+    }
+
+    function showSavedView() {
+      currentView = 'saved';
+      hideAllViews();
+      document.getElementById('savedSection').classList.remove('hidden');
+      setActiveNav('navSaved');
+      renderSavedDeals();
+    }
+
+    function showOrdersView() {
+      currentView = 'orders';
+      hideAllViews();
+      document.getElementById('ordersSection').classList.remove('hidden');
+      setActiveNav('navOrders');
+      renderOrders();
+    }
+
+    function showDashboardOrAuth() {
+      if (!currentUser) {
+        openAuthModal();
+        return;
+      }
+      if (currentUser.role === 'restaurant') {
+        showRestaurantDashboard();
+      } else {
+        showOrdersView();
+      }
+    }
+
+    function showRestaurantDashboard() {
+      if (!currentUser || currentUser.role !== 'restaurant') {
+        openAuthModal('restaurant');
+        return;
+      }
+      currentView = 'dashboard';
+      hideAllViews();
+      document.getElementById('restaurantDashboard').classList.remove('hidden');
+      setActiveNav('navAccount');
+      renderDashboard();
+    }
+
+    function setCategory(category, button) {
+      selectedCategory = category;
+      document.querySelectorAll('.pill').forEach((pill) => pill.classList.remove('active'));
+      button.classList.add('active');
+      renderDeals();
+    }
+
+    function sortDeals(list) {
+      const sortValue = document.getElementById('sortSelect')?.value || 'featured';
+      const sorted = [...list];
+
+      if (sortValue === 'priceLow') sorted.sort((a, b) => a.price - b.price);
+      if (sortValue === 'priceHigh') sorted.sort((a, b) => b.price - a.price);
+      if (sortValue === 'savingsHigh') sorted.sort((a, b) => getSavings(b) - getSavings(a));
+      if (sortValue === 'distanceLow') sorted.sort((a, b) => a.distanceValue - b.distanceValue);
+      if (sortValue === 'newest') sorted.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      if (sortValue === 'featured') {
+        sorted.sort((a, b) => {
+          if (isSoldOut(a) !== isSoldOut(b)) return isSoldOut(a) ? 1 : -1;
+          return getSavings(b) - getSavings(a);
+        });
+      }
+
+      return sorted;
+    }
+
+    function getBrowseFilteredDeals() {
+      const searchText = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
+      const filtered = deals.filter((deal) => {
+        const matchesCategory = selectedCategory === 'All' || deal.category === selectedCategory;
+        const matchesSearch =
+          deal.name.toLowerCase().includes(searchText) ||
+          deal.place.toLowerCase().includes(searchText) ||
+          deal.category.toLowerCase().includes(searchText) ||
+          deal.desc.toLowerCase().includes(searchText);
+        return matchesCategory && matchesSearch;
+      });
+      return sortDeals(filtered);
+    }
+
+    function toggleFavorite(id) {
+      const favorites = getFavorites();
+      let nextFavorites;
+      if (favorites.includes(id)) {
+        nextFavorites = favorites.filter((favId) => favId !== id);
+      } else {
+        nextFavorites = [...favorites, id];
+      }
+      setFavorites(nextFavorites);
+      if (currentView === 'browse') renderDeals();
+      if (currentView === 'saved') renderSavedDeals();
+    }
+
+    function addToCart(id) {
+      const deal = deals.find((d) => d.id === id);
+      if (!deal || isSoldOut(deal)) {
+        alert('This deal is sold out.');
+        return;
+      }
+
+      const cart = getCart();
+      if (cart.includes(id)) {
+        alert('Already in cart.');
+        return;
+      }
+
+      setCart([...cart, id]);
+      renderCart();
+      alert('Added to cart.');
+    }
+
+    function removeFromCart(id) {
+      setCart(getCart().filter((item) => item !== id));
+      renderCart();
+    }
+
+    function openCart() {
+      renderCart();
+      document.getElementById('cartModal').style.display = 'flex';
+    }
+
+    function closeCart() {
+      document.getElementById('cartModal').style.display = 'none';
+    }
+
+    function openCheckout() {
+      cleanupCart();
+      const cart = getCart();
+      if (cart.length === 0) {
+        alert('Your cart is empty.');
+        return;
+      }
+
+      if (!currentUser || currentUser.role !== 'customer') {
+        alert('Please log in as a customer to reserve deals.');
+        openAuthModal('customer');
+        return;
+      }
+
+      document.getElementById('checkoutName').value = currentUser.name || '';
+      document.getElementById('checkoutPhone').value = currentUser.phone || '';
+      document.getElementById('checkoutNotes').value = '';
+      renderCheckoutSummary();
+      closeCart();
+      document.getElementById('checkoutModal').style.display = 'flex';
+    }
+
+    function closeCheckout() {
+      document.getElementById('checkoutModal').style.display = 'none';
+    }
+
+    function openOrderConfirmation(order) {
+      const confirmation = document.getElementById('orderConfirmationContent');
+      confirmation.innerHTML = `
+        <div class="confirmation-box" style="padding:0; border:none; box-shadow:none; background:transparent;">
+          <div class="confirmation-line">Thanks, <strong>${escapeHtml(order.customerName)}</strong>. Your pickup is locked in.</div>
+          <div class="confirmation-code">${escapeHtml(order.id)}</div>
+          <div class="confirmation-line"><strong>Total:</strong> ${formatMoney(order.total)}</div>
+          <div class="confirmation-line"><strong>Status:</strong> Reserved for pickup</div>
+          <div class="confirmation-line"><strong>Reserved:</strong> ${formatDateTime(order.createdAt)}</div>
+          <div class="confirmation-line"><strong>Pickup items:</strong><br>${order.items.map((item) => `${escapeHtml(item.name)} — ${escapeHtml(item.place)} (${escapeHtml(item.pickup)})`).join('<br>')}</div>
+          <div class="confirmation-line"><strong>Pickup notes:</strong> ${escapeHtml(order.pickupNotes || 'None')}</div>
+          <div class="banner success" style="margin-top:14px;">Show this code at pickup: <strong>${escapeHtml(order.id)}</strong></div>
+        </div>
+      `;
+      document.getElementById('orderConfirmationModal').style.display = 'flex';
+    }
+
+    function closeOrderConfirmation() {
+      document.getElementById('orderConfirmationModal').style.display = 'none';
+    }
+
+    function renderCheckoutSummary() {
+      const checkoutSummary = document.getElementById('checkoutSummary');
+      const cart = getCart();
+      const cartDeals = deals.filter((deal) => cart.includes(deal.id) && !isSoldOut(deal));
+
+      if (cartDeals.length === 0) {
+        checkoutSummary.innerHTML = '<div class="small-note">No valid items left in cart.</div>';
+        return;
+      }
+
+      const total = cartDeals.reduce((sum, deal) => sum + Number(deal.price), 0);
+      checkoutSummary.innerHTML = `
+        <div class="list-card" style="padding:0; border:none; box-shadow:none;">
+          ${cartDeals.map((deal) => `
+            <div class="cart-item">
+              <div class="cart-main">
+                <div class="cart-title">${escapeHtml(deal.name)}</div>
+                <div class="cart-sub">${escapeHtml(deal.place)} • ${escapeHtml(deal.pickup)}</div>
+              </div>
+              <div class="cart-price">${formatMoney(deal.price)}</div>
+            </div>
+          `).join('')}
+        </div>
+        <div class="checkout-total">
+          <span>Total</span>
+          <span>${formatMoney(total)}</span>
+        </div>
+      `;
+    }
+
+    function reserveSingleDeal(id) {
+      const deal = deals.find((d) => d.id === id);
+      if (!deal || isSoldOut(deal)) {
+        alert('This deal is sold out.');
+        return;
+      }
+
+      if (!currentUser || currentUser.role !== 'customer') {
+        alert('Please log in as a customer to reserve deals.');
+        openAuthModal('customer');
+        return;
+      }
+
+      setCart([id]);
+      openCheckout();
+    }
+
+    function submitCheckout() {
+      cleanupCart();
+      const cart = getCart();
+      if (cart.length === 0) {
+        alert('Your cart is empty.');
+        return;
+      }
+
+      const customerName = document.getElementById('checkoutName').value.trim();
+      const customerPhone = document.getElementById('checkoutPhone').value.trim();
+      const pickupNotes = document.getElementById('checkoutNotes').value.trim();
+
+      if (!customerName || !customerPhone) {
+        alert('Please enter your name and phone number.');
+        return;
+      }
+
+      const cartDeals = deals.filter((deal) => cart.includes(deal.id) && !isSoldOut(deal));
+      if (cartDeals.length === 0) {
+        alert('No valid items are left in your cart.');
+        setCart([]);
+        closeCheckout();
+        renderCart();
+        return;
+      }
+
+      currentUser.name = customerName;
+      currentUser.phone = customerPhone;
+      saveCurrentUser();
+      updateUIForRole();
+
+      let total = 0;
+      const items = [];
+      const restaurantEmails = new Set();
+      const restaurantNames = new Set();
+
+      cartDeals.forEach((deal) => {
+        deal.remaining -= 1;
+        total += Number(deal.price);
+        restaurantEmails.add(deal.ownerEmail);
+        restaurantNames.add(deal.ownerRestaurantName || deal.place);
+
+        items.push({
+          dealId: deal.id,
+          name: deal.name,
+          place: deal.place,
+          price: Number(deal.price).toFixed(2),
+          pickup: deal.pickup,
+          ownerEmail: deal.ownerEmail,
+          ownerRestaurantName: deal.ownerRestaurantName || deal.place
+        });
+      });
+
+      const order = {
+        id: generateOrderCode(),
+        customerEmail: currentUser.email,
+        customerName,
+        customerPhone,
+        pickupNotes,
+        total: Number(total).toFixed(2),
+        createdAt: new Date().toISOString(),
+        status: 'ready',
+        items,
+        restaurantEmails: [...restaurantEmails],
+        restaurantNames: [...restaurantNames]
+      };
+
+      orders.unshift(order);
+      saveOrders();
+      saveDeals();
+      setCart([]);
+
+      const favorites = getFavorites().filter((id) => {
+        const deal = deals.find((d) => d.id === id);
+        return deal && !isSoldOut(deal);
+      });
+      setFavorites(favorites);
+
+      document.getElementById('checkoutName').value = '';
+      document.getElementById('checkoutPhone').value = '';
+      document.getElementById('checkoutNotes').value = '';
+
+      closeCheckout();
+      closeDetails();
+      renderDeals();
+      renderSavedDeals();
+      renderOrders(order.id);
+      renderDashboard();
+      showOrdersView();
+      openOrderConfirmation(order);
+    }
+
+    function openAuthModal(defaultRole = 'customer') {
+      document.getElementById('authModal').style.display = 'flex';
+      document.getElementById('authRole').value = defaultRole;
+
+      if (currentUser) {
+        document.getElementById('authName').value = currentUser.name || '';
+        document.getElementById('authEmail').value = currentUser.email || '';
+        document.getElementById('authPhone').value = currentUser.phone || '';
+        document.getElementById('authRole').value = currentUser.role || defaultRole;
+        document.getElementById('authRestaurantName').value = currentUser.restaurantName || '';
+      } else {
+        document.getElementById('authName').value = '';
+        document.getElementById('authEmail').value = '';
+        document.getElementById('authPhone').value = '';
+        document.getElementById('authRestaurantName').value = '';
+      }
+
+      updateAuthHint();
+    }
+
+    function updateAuthHint() {
+      const role = document.getElementById('authRole').value;
+      const hint = document.getElementById('authHint');
+      const restaurantField = document.getElementById('authRestaurantName').closest('.form-group');
+      if (role === 'restaurant') {
+        hint.textContent = 'Restaurant accounts can post deals, edit listings, delete listings, and track reservations that belong to their restaurant only.';
+        restaurantField.classList.remove('hidden');
+      } else {
+        hint.textContent = 'Customer accounts can save deals, add items to cart, reserve pickups, and track their personal order history.';
+        restaurantField.classList.add('hidden');
+      }
+    }
+
+    function closeAuthModal() {
+      document.getElementById('authModal').style.display = 'none';
+    }
+
+    function saveAuth() {
+      const name = document.getElementById('authName').value.trim();
+      const email = document.getElementById('authEmail').value.trim().toLowerCase();
+      const phone = document.getElementById('authPhone').value.trim();
+      const role = document.getElementById('authRole').value;
+      const restaurantName = document.getElementById('authRestaurantName').value.trim();
+
+      if (!name || !email) {
+        alert('Please enter your name and email.');
+        return;
+      }
+
+      if (role === 'restaurant' && !restaurantName) {
+        alert('Please enter your restaurant name.');
+        return;
+      }
+
+      currentUser = {
+        name,
+        email,
+        phone,
+        role,
+        restaurantName: role === 'restaurant' ? restaurantName : ''
+      };
+
+      saveCurrentUser();
+      updateUIForRole();
+      closeAuthModal();
+
+      if (role === 'restaurant') {
+        showRestaurantDashboard();
+      } else {
+        showHomeView();
+      }
+    }
+
+    function logoutUser() {
+      currentUser = null;
+      saveCurrentUser();
+      updateUIForRole();
+      closeAuthModal();
+      showHomeView();
+    }
+
+    function openPostForm() {
+      if (!currentUser || currentUser.role !== 'restaurant') {
+        alert('Please log in as a restaurant to post deals.');
+        openAuthModal('restaurant');
+        return;
+      }
+
+      resetDealForm();
+      document.getElementById('dealPlace').value = currentUser.restaurantName || '';
+      document.getElementById('postModalTitle').textContent = 'Post a Hamilton Deal';
+      document.getElementById('dealSubmitBtn').textContent = 'Post Deal';
+      document.getElementById('postModal').style.display = 'flex';
+    }
+
+    function closePostForm() {
+      document.getElementById('postModal').style.display = 'none';
+    }
+
+    function resetDealForm() {
+      document.getElementById('editingDealId').value = '';
+      document.getElementById('dealName').value = '';
+      document.getElementById('dealPlace').value = currentUser?.restaurantName || '';
+      document.getElementById('dealPrice').value = '';
+      document.getElementById('dealOldPrice').value = '';
+      document.getElementById('dealQuantity').value = '';
+      document.getElementById('dealPickup').value = '';
+      document.getElementById('dealCategory').value = 'Restaurant';
+      document.getElementById('dealDesc').value = '';
+      document.getElementById('dealDistance').value = '';
+      document.getElementById('dealUrgency').value = 'Ending Soon';
+      document.getElementById('dealImageUrl').value = '';
+      document.getElementById('postModalTitle').textContent = 'Post a Hamilton Deal';
+      document.getElementById('dealSubmitBtn').textContent = 'Post Deal';
+    }
+
+    function submitDeal() {
+      if (!currentUser || currentUser.role !== 'restaurant') {
+        alert('Please log in as a restaurant to post deals.');
+        return;
+      }
+
+      const editingDealId = document.getElementById('editingDealId').value;
+      const name = document.getElementById('dealName').value.trim();
+      const place = document.getElementById('dealPlace').value.trim();
+      const price = parseFloat(document.getElementById('dealPrice').value);
+      const oldPrice = parseFloat(document.getElementById('dealOldPrice').value);
+      const quantity = parseInt(document.getElementById('dealQuantity').value, 10);
+      const pickup = document.getElementById('dealPickup').value.trim();
+      const category = document.getElementById('dealCategory').value;
+      const desc = document.getElementById('dealDesc').value.trim();
+      const distance = document.getElementById('dealDistance').value.trim();
+      const urgency = document.getElementById('dealUrgency').value;
+      const image = document.getElementById('dealImageUrl').value.trim() || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=1200&q=80';
+      const distanceValue = parseFloat(String(distance).replace(/[^\d.]/g, '')) || 99;
+
+      if (!name || !place || !pickup || !desc || !distance || isNaN(price) || price <= 0 || isNaN(quantity) || quantity <= 0) {
+        alert('Please fill out all fields properly.');
+        return;
+      }
+
+      const safeOldPrice = isNaN(oldPrice) ? Math.max(price + 5, price * 2) : oldPrice;
+
+      if (editingDealId) {
+        const existing = deals.find((deal) => String(deal.id) === String(editingDealId));
+        if (!existing) {
+          alert('Could not find that deal to update.');
+          return;
+        }
+        if (existing.ownerEmail !== currentUser.email) {
+          alert('You can only edit your own deals.');
+          return;
+        }
+
+        const reservedCount = existing.quantity - existing.remaining;
+        const adjustedQuantity = Math.max(quantity, reservedCount);
+        existing.name = name;
+        existing.place = place;
+        existing.price = price;
+        existing.oldPrice = safeOldPrice;
+        existing.pickup = pickup;
+        existing.category = category;
+        existing.desc = desc;
+        existing.distance = distance;
+        existing.distanceValue = distanceValue;
+        existing.urgency = urgency;
+        existing.image = image;
+        existing.quantity = adjustedQuantity;
+        existing.remaining = Math.max(0, adjustedQuantity - reservedCount);
+        existing.ownerRestaurantName = currentUser.restaurantName || place;
+      } else {
+        deals.unshift({
+          id: Date.now(),
+          name,
+          place,
+          price,
+          oldPrice: safeOldPrice,
+          pickup,
+          category,
+          desc,
+          image,
+          distance,
+          distanceValue,
+          urgency,
+          postedByUser: true,
+          ownerEmail: currentUser.email,
+          ownerName: currentUser.name,
+          ownerRestaurantName: currentUser.restaurantName || place,
+          quantity,
+          remaining: quantity,
+          createdAt: new Date().toISOString()
+        });
+      }
+
+      saveDeals();
+      closePostForm();
+      resetDealForm();
+      renderDeals();
+      renderSavedDeals();
+      renderDashboard();
+    }
+
+    function editDeal(id) {
+      const deal = deals.find((item) => item.id === id);
+      if (!deal) return;
+      if (!currentUser || currentUser.role !== 'restaurant' || deal.ownerEmail !== currentUser.email) {
+        alert('You can only edit your own restaurant deals.');
+        return;
+      }
+
+      document.getElementById('editingDealId').value = String(deal.id);
+      document.getElementById('dealName').value = deal.name;
+      document.getElementById('dealPlace').value = deal.place;
+      document.getElementById('dealPrice').value = deal.price;
+      document.getElementById('dealOldPrice').value = deal.oldPrice;
+      document.getElementById('dealQuantity').value = deal.quantity;
+      document.getElementById('dealPickup').value = deal.pickup;
+      document.getElementById('dealCategory').value = deal.category;
+      document.getElementById('dealDesc').value = deal.desc;
+      document.getElementById('dealDistance').value = deal.distance;
+      document.getElementById('dealUrgency').value = deal.urgency;
+      document.getElementById('dealImageUrl').value = deal.image;
+      document.getElementById('postModalTitle').textContent = 'Edit Deal';
+      document.getElementById('dealSubmitBtn').textContent = 'Save Changes';
+      document.getElementById('postModal').style.display = 'flex';
+    }
+
+    function deleteDeal(id) {
+      const deal = deals.find((item) => item.id === id);
+      if (!deal) return;
+      if (!currentUser || currentUser.role !== 'restaurant' || deal.ownerEmail !== currentUser.email) {
+        alert('You can only delete your own restaurant deals.');
+        return;
+      }
+
+      const confirmed = confirm(`Delete ${deal.name}?`);
+      if (!confirmed) return;
+
+      deals = deals.filter((item) => item.id !== id);
+      saveDeals();
+
+      Object.keys(cartsByUser).forEach((userKey) => {
+        cartsByUser[userKey] = (cartsByUser[userKey] || []).filter((itemId) => itemId !== id);
+      });
+      saveCartsByUser();
+
+      Object.keys(favoritesByUser).forEach((userKey) => {
+        favoritesByUser[userKey] = (favoritesByUser[userKey] || []).filter((itemId) => itemId !== id);
+      });
+      saveFavoritesByUser();
+
+      renderDeals();
+      renderSavedDeals();
+      renderDashboard();
+    }
+
+    function markOrderStatus(orderId, nextStatus) {
+      const order = orders.find((item) => item.id === orderId);
+      if (!order) return;
+
+      const userCanManage = currentUser && currentUser.role === 'restaurant' && order.restaurantEmails.includes(currentUser.email);
+      if (!userCanManage) {
+        alert('You can only manage reservations connected to your restaurant account.');
+        return;
+      }
+
+      order.status = nextStatus;
+      saveOrders();
+      renderOrders();
+      renderDashboard();
+    }
+
+    function closeDetails() {
+      document.getElementById('detailsModal').style.display = 'none';
+    }
+
+    function showDetails(id) {
+      const deal = deals.find((d) => d.id === id);
+      if (!deal) return;
+
+      const soldOut = isSoldOut(deal);
+      const savings = getSavings(deal);
+      const isOwner = currentUser && currentUser.role === 'restaurant' && currentUser.email === deal.ownerEmail;
+      const favorites = getFavorites();
+      const isFav = favorites.includes(deal.id);
+
+      document.getElementById('detailsContent').innerHTML = `
+        <h2>${escapeHtml(deal.name)}</h2>
+        <img class="details-image" src="${escapeAttribute(deal.image)}" alt="${escapeAttribute(deal.name)}">
+        <div class="details-line"><strong>${escapeHtml(deal.place)}</strong></div>
+        <div class="details-line">${escapeHtml(deal.category)} • ${escapeHtml(deal.distance)}</div>
+        <div class="details-line">${escapeHtml(deal.pickup)}</div>
+        <div class="details-line">${escapeHtml(deal.urgency)}</div>
+        <div class="details-line">${escapeHtml(deal.desc)}</div>
+        <div class="details-line">Posted by: ${escapeHtml(deal.ownerRestaurantName || deal.place)}</div>
+        <div class="details-old-price">${formatMoney(deal.oldPrice)}</div>
+        <div class="details-price">${formatMoney(deal.price)}</div>
+        <div class="details-savings">You save ${formatMoney(savings)}</div>
+        <div class="details-stock">${soldOut ? 'Sold out' : `${deal.remaining} left out of ${deal.quantity}`}</div>
+        <div class="form-actions">
+          <button class="btn btn-light" onclick="toggleFavorite(${deal.id}); showDetails(${deal.id});">${isFav ? 'Unsave' : 'Save'}</button>
+          <button class="btn btn-dark" onclick="addToCart(${deal.id})" ${soldOut ? 'disabled' : ''}>Add to Cart</button>
+          <button class="btn btn-brand" onclick="reserveSingleDeal(${deal.id})" ${soldOut ? 'disabled' : ''}>Reserve Now</button>
+          ${isOwner ? `<button class="btn btn-outline" onclick="closeDetails(); editDeal(${deal.id});">Edit</button>` : ''}
+          <button class="btn btn-dark" onclick="closeDetails()">Close</button>
+        </div>
+      `;
+      document.getElementById('detailsModal').style.display = 'flex';
+    }
+
+    function renderDealCards(dealList, targetId, emptyId, countId = null, emptyMessage = 'No deals found.') {
+      const grid = document.getElementById(targetId);
+      const emptyState = document.getElementById(emptyId);
+      const countEl = countId ? document.getElementById(countId) : null;
+      const favorites = getFavorites();
+
+      if (!grid || !emptyState) return;
+      grid.innerHTML = '';
+
+      if (countEl) {
+        countEl.textContent = `${dealList.length} ${dealList.length === 1 ? 'deal' : 'deals'}`;
+      }
+
+      if (dealList.length === 0) {
+        emptyState.style.display = 'block';
+        emptyState.textContent = emptyMessage;
+        return;
+      }
+
+      emptyState.style.display = 'none';
+
+      dealList.forEach((deal) => {
+        const isFav = favorites.includes(deal.id);
+        const soldOut = isSoldOut(deal);
+        const savings = getSavings(deal);
+        const isOwner = currentUser && currentUser.role === 'restaurant' && currentUser.email === deal.ownerEmail;
+
+        const card = document.createElement('div');
+        card.className = `deal-card ${soldOut ? 'sold-out' : ''}`;
+        card.innerHTML = `
+          <div class="deal-image-wrap">
+            ${soldOut ? '<div class="sold-badge">Sold Out</div>' : ''}
+            <img class="deal-image" src="${escapeAttribute(deal.image)}" alt="${escapeAttribute(deal.name)}">
+            <button class="favorite-btn ${isFav ? 'active' : ''}" onclick="toggleFavorite(${deal.id})">${isFav ? '❤' : '🤍'}</button>
+            <div class="floating-badges">
+              <div class="urgency-badge">${soldOut ? 'Unavailable' : escapeHtml(deal.urgency)}</div>
+              <div class="distance-badge">${escapeHtml(deal.distance)}</div>
+            </div>
+          </div>
+          <div class="deal-content">
+            <div class="deal-row-top">
+              <div class="deal-type">${escapeHtml(deal.category)}</div>
+              ${isOwner ? '<div class="deal-chip">Your listing</div>' : ''}
+            </div>
+            <div class="deal-title">${escapeHtml(deal.name)}</div>
+            <div class="deal-place">${escapeHtml(deal.place)}</div>
+            <div class="deal-pickup">${escapeHtml(deal.pickup)}</div>
+            <div class="deal-desc">${escapeHtml(deal.desc)}</div>
+            <div class="deal-meta-line">Listed by ${escapeHtml(deal.ownerRestaurantName || deal.place)}</div>
+            <div class="deal-footer">
+              <div class="deal-price-block">
+                <div class="deal-old-price">${formatMoney(deal.oldPrice)}</div>
+                <div class="deal-price">${formatMoney(deal.price)}</div>
+                <div class="deal-savings">You save ${formatMoney(savings)}</div>
+                <div class="deal-stock">${soldOut ? 'Sold out' : `${deal.remaining} left`}</div>
+              </div>
+              <div class="deal-buttons">
+                <button class="details-btn" onclick="showDetails(${deal.id})">Details</button>
+                <button class="cart-btn" onclick="addToCart(${deal.id})" ${soldOut ? 'disabled' : ''}>Add</button>
+                <button class="reserve-btn" onclick="reserveSingleDeal(${deal.id})" ${soldOut ? 'disabled' : ''}>Reserve</button>
+              </div>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function renderDeals() {
+      cleanupCart();
+      const filteredDeals = getBrowseFilteredDeals();
+      renderDealCards(filteredDeals, 'dealGrid', 'emptyState', 'resultCount', 'No deals match that search right now.');
+    }
+
+    function renderSavedDeals() {
+      const favorites = getFavorites();
+      const savedDeals = deals.filter((deal) => favorites.includes(deal.id));
+      document.getElementById('savedCount').textContent = `${savedDeals.length} ${savedDeals.length === 1 ? 'saved' : 'saved'}`;
+      renderDealCards(savedDeals, 'savedGrid', 'savedEmptyState', null, 'You have no saved deals yet.');
+    }
+
+    function renderCart() {
+      cleanupCart();
+      const cartItemsEl = document.getElementById('cartItems');
+      const cartTotalEl = document.getElementById('cartTotal');
+      const cart = getCart();
+      const cartDeals = deals.filter((deal) => cart.includes(deal.id) && !isSoldOut(deal));
+
+      cartItemsEl.innerHTML = '';
+      if (cartDeals.length === 0) {
+        cartItemsEl.innerHTML = '<div class="empty-state" style="display:block;">Your cart is empty.</div>';
+        cartTotalEl.textContent = '$0.00';
+        return;
+      }
+
+      let total = 0;
+      cartDeals.forEach((deal) => {
+        total += Number(deal.price);
+        const item = document.createElement('div');
+        item.className = 'cart-item';
+        item.innerHTML = `
+          <div class="cart-main">
+            <div class="cart-title">${escapeHtml(deal.name)}</div>
+            <div class="cart-sub">${escapeHtml(deal.place)} • ${escapeHtml(deal.pickup)} • ${deal.remaining} left</div>
+          </div>
+          <div class="cart-price">${formatMoney(deal.price)}</div>
+          <button class="inline-btn light" onclick="removeFromCart(${deal.id})">Remove</button>
+        `;
+        cartItemsEl.appendChild(item);
+      });
+
+      cartTotalEl.textContent = formatMoney(total);
+    }
+
+    function getCurrentUserOrders() {
+      if (!currentUser || currentUser.role !== 'customer') return [];
+      return orders.filter((order) => order.customerEmail === currentUser.email);
+    }
+
+    function renderOrders(latestOrderId = null) {
+      const ordersList = document.getElementById('ordersList');
+      const latestConfirmationBox = document.getElementById('latestConfirmationBox');
+      const userOrders = getCurrentUserOrders();
+      const latestOrder = latestOrderId
+        ? userOrders.find((order) => order.id === latestOrderId)
+        : userOrders[0];
+
+      ordersList.innerHTML = '';
+
+      if (latestOrder) {
+        latestConfirmationBox.classList.remove('hidden');
+        latestConfirmationBox.innerHTML = `
+          <h3>Pickup Confirmed</h3>
+          <div class="confirmation-line">Thanks, <strong>${escapeHtml(latestOrder.customerName)}</strong>. Your reservation is locked in.</div>
+          <div class="confirmation-code">${escapeHtml(latestOrder.id)}</div>
+          <div class="confirmation-line"><strong>Total:</strong> ${formatMoney(latestOrder.total)}</div>
+          <div class="confirmation-line"><strong>Phone:</strong> ${escapeHtml(latestOrder.customerPhone)}</div>
+          <div class="confirmation-line"><strong>Status:</strong> ${escapeHtml(latestOrder.status)}</div>
+          <div class="confirmation-line"><strong>Reserved:</strong> ${formatDateTime(latestOrder.createdAt)}</div>
+          <div class="confirmation-line"><strong>Pickup items:</strong> ${latestOrder.items.map((item) => escapeHtml(item.name)).join(', ')}</div>
+        `;
+      } else {
+        latestConfirmationBox.classList.add('hidden');
+      }
+
+      if (!currentUser || currentUser.role !== 'customer') {
+        ordersList.innerHTML = '<div class="empty-state" style="display:block;">Log in as a customer to view your orders.</div>';
+        return;
+      }
+
+      if (userOrders.length === 0) {
+        ordersList.innerHTML = '<div class="empty-state" style="display:block;">You have no orders yet.</div>';
+        return;
+      }
+
+      userOrders.forEach((order) => {
+        const item = document.createElement('div');
+        item.className = 'order-item';
+        item.innerHTML = `
+          <div class="order-main">
+            <div class="order-title">${escapeHtml(order.customerName)} • ${escapeHtml(order.id)}</div>
+            <div class="order-sub">${order.items.map((i) => `${escapeHtml(i.name)} from ${escapeHtml(i.place)}`).join('<br>')}</div>
+            <div class="order-status ${escapeAttribute(order.status)}">${escapeHtml(order.status)}</div>
+          </div>
+          <div class="order-price">${formatMoney(order.total)}</div>
+        `;
+        ordersList.appendChild(item);
+      });
+    }
+
+    function getRestaurantDeals() {
+      if (!currentUser || currentUser.role !== 'restaurant') return [];
+      return deals.filter((deal) => deal.ownerEmail === currentUser.email);
+    }
+
+    function getRestaurantOrders() {
+      if (!currentUser || currentUser.role !== 'restaurant') return [];
+      return orders.filter((order) => order.restaurantEmails.includes(currentUser.email));
+    }
+
+    function renderDashboard() {
+      const banner = document.getElementById('dashboardBanner');
+      const restaurantNamePill = document.getElementById('dashboardRestaurantName');
+      const profileMeta = document.getElementById('restaurantProfileMeta');
+      const postedDealsList = document.getElementById('postedDealsList');
+      const restaurantOrdersList = document.getElementById('restaurantOrdersList');
+
+      if (!currentUser || currentUser.role !== 'restaurant') {
+        banner.textContent = 'Log in as a restaurant to manage your own listed deals.';
+        restaurantNamePill.textContent = 'Restaurant account';
+        profileMeta.textContent = 'Log in as a restaurant to view profile details.';
+        postedDealsList.innerHTML = '<div class="empty-state" style="display:block;">No restaurant account active.</div>';
+        restaurantOrdersList.innerHTML = '<div class="empty-state" style="display:block;">No reservation activity yet.</div>';
+        document.getElementById('dashActiveDeals').textContent = '0';
+        document.getElementById('dashSoldOutDeals').textContent = '0';
+        document.getElementById('dashPotentialRevenue').textContent = '$0.00';
+        document.getElementById('dashReservedOrders').textContent = '0';
+        return;
+      }
+
+      const restaurantDeals = getRestaurantDeals();
+      const restaurantOrders = getRestaurantOrders();
+      const activeDeals = restaurantDeals.filter((deal) => !isSoldOut(deal));
+      const soldOutDeals = restaurantDeals.filter((deal) => isSoldOut(deal));
+      const potentialRevenue = activeDeals.reduce((sum, deal) => sum + Number(deal.price) * Number(deal.remaining), 0);
+
+      banner.textContent = `${currentUser.restaurantName || currentUser.name} is active. You can post, edit, delete, and monitor only your own deals.`;
+      restaurantNamePill.textContent = currentUser.restaurantName || currentUser.name;
+      profileMeta.innerHTML = `
+        <div class="list-meta"><strong>Name:</strong> ${escapeHtml(currentUser.name)}</div>
+        <div class="list-meta" style="margin-top:8px;"><strong>Email:</strong> ${escapeHtml(currentUser.email)}</div>
+        <div class="list-meta" style="margin-top:8px;"><strong>Restaurant:</strong> ${escapeHtml(currentUser.restaurantName || 'Not set')}</div>
+        <div class="list-meta" style="margin-top:8px;"><strong>Phone:</strong> ${escapeHtml(currentUser.phone || 'Not set')}</div>
+      `;
+
+      document.getElementById('dashActiveDeals').textContent = String(activeDeals.length);
+      document.getElementById('dashSoldOutDeals').textContent = String(soldOutDeals.length);
+      document.getElementById('dashPotentialRevenue').textContent = formatMoney(potentialRevenue);
+      document.getElementById('dashReservedOrders').textContent = String(restaurantOrders.length);
+
+      postedDealsList.innerHTML = '';
+      if (restaurantDeals.length === 0) {
+        postedDealsList.innerHTML = '<div class="empty-state" style="display:block;">You have not posted any deals yet.</div>';
+      } else {
+        restaurantDeals
+          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+          .forEach((deal) => {
+            const soldOut = isSoldOut(deal);
+            const reservedCount = deal.quantity - deal.remaining;
+            const item = document.createElement('div');
+            item.className = 'posted-item';
+            item.innerHTML = `
+              <div class="posted-main">
+                <div class="posted-title">${escapeHtml(deal.name)} ${soldOut ? '• Sold Out' : '• Live'}</div>
+                <div class="posted-sub">${escapeHtml(deal.place)} • ${escapeHtml(deal.pickup)} • ${escapeHtml(deal.category)} • ${deal.remaining}/${deal.quantity} left • ${reservedCount} reserved</div>
+              </div>
+              <div class="posted-price">${formatMoney(deal.price)}</div>
+              <div class="dashboard-actions">
+                <button class="inline-btn light" onclick="editDeal(${deal.id})">Edit</button>
+                <button class="inline-btn danger" onclick="deleteDeal(${deal.id})">Delete</button>
+              </div>
+            `;
+            postedDealsList.appendChild(item);
+          });
+      }
+
+      restaurantOrdersList.innerHTML = '';
+      if (restaurantOrders.length === 0) {
+        restaurantOrdersList.innerHTML = '<div class="empty-state" style="display:block;">No reservation activity yet.</div>';
+      } else {
+        restaurantOrders.slice(0, 8).forEach((order) => {
+          const restaurantItems = order.items.filter((item) => item.ownerEmail === currentUser.email);
+          const item = document.createElement('div');
+          item.className = 'activity-item';
+          item.innerHTML = `
+            <div class="activity-main">
+              <div class="activity-title">${escapeHtml(order.customerName)} • ${escapeHtml(order.id)}</div>
+              <div class="activity-sub">${restaurantItems.map((i) => escapeHtml(i.name)).join(', ')} • ${formatDateTime(order.createdAt)}</div>
+              <div class="order-status ${escapeAttribute(order.status)}">${escapeHtml(order.status)}</div>
+            </div>
+            <div class="dashboard-actions">
+              <button class="inline-btn brand" onclick="markOrderStatus('${escapeJs(order.id)}','picked-up')">Picked Up</button>
+              <button class="inline-btn light" onclick="markOrderStatus('${escapeJs(order.id)}','ready')">Ready</button>
+              <button class="inline-btn danger" onclick="markOrderStatus('${escapeJs(order.id)}','cancelled')">Cancel</button>
+            </div>
+          `;
+          restaurantOrdersList.appendChild(item);
+        });
+      }
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function escapeAttribute(value) {
+      return escapeHtml(value);
+    }
+
+    function escapeJs(value) {
+      return String(value ?? '').replace(/'/g, "\\'");
+    }
+
+    function init() {
+      loadState();
+      cleanupCart();
+      updateUIForRole();
+      document.getElementById('authRole').addEventListener('change', updateAuthHint);
+      renderDeals();
+      renderSavedDeals();
+      renderOrders();
+      renderDashboard();
+      showHomeView();
+    }
+
+    window.onclick = function(event) {
+      const postModal = document.getElementById('postModal');
+      const detailsModal = document.getElementById('detailsModal');
+      const cartModal = document.getElementById('cartModal');
+      const checkoutModal = document.getElementById('checkoutModal');
+      const authModal = document.getElementById('authModal');
+      const orderConfirmationModal = document.getElementById('orderConfirmationModal');
+
+      if (event.target === postModal) closePostForm();
+      if (event.target === detailsModal) closeDetails();
+      if (event.target === cartModal) closeCart();
+      if (event.target === checkoutModal) closeCheckout();
+      if (event.target === authModal) closeAuthModal();
+      if (event.target === orderConfirmationModal) closeOrderConfirmation();
+    };
+
+    init();
+  </script>
+</body>
+</html>
