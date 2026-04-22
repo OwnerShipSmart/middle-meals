@@ -1935,15 +1935,30 @@
       openCheckout();
     }
 
-    function submitCheckout() {
-alert("submitCheckout fired");    
-  cleanupCart();
-      const cart = getCart();
-alert("cart length: " + cart.length);
-      if (cart.length === 0) {
-        alert('Your cart is empty.');
-        return;
-      }
+function submitCheckout() {
+  alert("submitCheckout fired");
+
+  try {
+    cleanupCart();
+    alert("cleanupCart passed");
+  } catch (e) {
+    alert("cleanupCart error: " + e.message);
+    return;
+  }
+
+  let cart;
+  try {
+    cart = getCart();
+    alert("cart length: " + cart.length);
+  } catch (e) {
+    alert("getCart error: " + e.message);
+    return;
+  }
+
+  if (cart.length === 0) {
+    alert('Your cart is empty.');
+    return;
+  }
 
       const customerName = document.getElementById('checkoutName').value.trim();
       const customerPhone = document.getElementById('checkoutPhone').value.trim();
