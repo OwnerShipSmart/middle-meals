@@ -1936,132 +1936,136 @@
     }
 
 function submitCheckout() {
-  alert("submitCheckout fired");
-
   try {
     cleanupCart();
-    alert("cleanupCart passed");
-  } catch (e) {
-    alert("cleanupCart error: " + e.message);
-    return;
-  }
+    const cart = getCart();
 
-  let cart;
-  try {
-    cart = getCart();
-    alert("cart length: " + cart.length);
-  } catch (e) {
-    alert("getCart error: " + e.message);
-    return;
-  }
-
-  if (cart.length === 0) {
-    alert('Your cart is empty.');
-    return;
-  }
-
-      const customerName = document.getElementById('checkoutName').value.trim();
-	alert("got checkout fields");
-      const customerPhone = document.getElementById('checkoutPhone').value.trim();
-      const pickupNotes = document.getElementById('checkoutNotes').value.trim();
-
-      if (!customerName || !customerPhone) {
-        alert('Please enter your name and phone number.');
-        return;
-      }
-alert("name and phone passed");
-
-      const cartDeals = deals.filter((deal) => cart.includes(deal.id) && !isSoldOut(deal));
-	alert("cartDeals length: " + cartDeals.length);     
- if (cartDeals.length === 0) {
-        alert('No valid items are left in your cart.');
-        setCart([]);
-        closeCheckout();
-        renderCart();
-        return;
-      }
-
-      currentUser.name = customerName;
-      currentUser.phone = customerPhone;
-      saveCurrentUser();
-      updateUIForRole();
-
-      let total = 0;
-      const items = [];
-      const restaurantEmails = new Set();
-      const restaurantNames = new Set();
-
-      cartDeals.forEach((deal) => {
-        deal.remaining -= 1;
-        total += Number(deal.price);
-        restaurantEmails.add(deal.ownerEmail);
-        restaurantNames.add(deal.ownerRestaurantName || deal.place);
-
-        items.push({
-          dealId: deal.id,
-          name: deal.name,
-          place: deal.place,
-          price: Number(deal.price).toFixed(2),
-          pickup: deal.pickup,
-          ownerEmail: deal.ownerEmail,
-          ownerRestaurantName: deal.ownerRestaurantName || deal.place
-        });
-      });
-
-      const order = {
-        id: generateOrderCode(),
-        customerEmail: currentUser.email,
-        customerName,
-        customerPhone,
-        pickupNotes,
-        total: Number(total).toFixed(2),
-        createdAt: new Date().toISOString(),
-        status: 'ready',
-        items,
-        restaurantEmails: [...restaurantEmails],
-        restaurantNames: [...restaurantNames]
-      };
-
-      orders.unshift(order);
-      saveOrders();
-      saveDeals();
-      setCart([]);
-
-      const favorites = getFavorites().filter((id) => {
-        const deal = deals.find((d) => d.id === id);
-        return deal && !isSoldOut(deal);
-      });
-      setFavorites(favorites);
-
-      document.getElementById('checkoutName').value = '';
-      document.getElementById('checkoutPhone').value = '';
-      document.getElementById('checkoutNotes').value = '';
-closeCheckout();
-
-// 🔥 SHOW CONFIRMATION
-const content = document.getElementById('orderConfirmationContent');
-
-content.innerHTML = `
-  <p><strong>Order #${order.id}</strong></p>
-  <p>${order.items.length} item(s)</p>
-  <p>Total: $${order.total}</p>
-  <p>Pickup ready at:</p>
-  <ul>
-    ${order.items.map(item => `<li>${item.name} - ${item.place}</li>`).join('')}
-  </ul>
-`;
-
-document.getElementById('orderConfirmationModal').style.display = 'flex';
-	
-      closeCheckout();
-      closeDetails();
-      renderDeals();
-      renderSavedDeals();
-      renderOrders(order.id);
-      renderDashboard();
-      showOrdersView();
-      openOrderConfirmation(order);
+    if (!Array.isArray(cart) || cart.length === 0) {
+      alert('Your cart is empty.');
+      return;
     }
+
+    const checkoutNameEl = document.getElementById('checkoutName');
+    const checkoutPhoneEl = document.getElementById('checkoutPhone');
+    const checkoutNotesEl = document.getElementById('checkoutNotes');
+
+    const customerName = checkoutNameEl ? checkoutNameEl.value.trim() : '';
+    const customerPhone = checkoutPhoneEl ? checkoutPhoneEl.value.trim() : '';
+    const pickupNotes = checkoutNotesEl ? checkoutNotesEl.value.trim() : '';
+
+    if (!customerName || !customerPhone) {
+      alert('Please enter your name and phone number.');
+      return;
+    }
+
+    const cartDeals = deals.filter((deal) => cart.includes(deal.id) && !isSoldOut(deal));
+
+    if (!cartDeals.length) {
+      alert('No valid items are left in your cart.');
+      setCart([]);
+      closeCheckout();
+      renderCart();
+      return;
+    }
+
+    if (!currentUser) {
+      currentUser = {};
+    }
+
+    currentUser.name = customerName;
+    currentUser.phone = customerPhone;
+    if (!currentUser.role) {
+      currentUser.role = 'customer';
+    }
+    saveCurrentUser();
+    updateUIForRole();
+
+    let total = 0;
+    const items = [];
+    const restaurantEmails = new Set();
+    const restaurantNames = new Set();
+
+    cartDeals.forEach((deal) => {
+      deal.remaining = Math.max(0, (Number(deal.remaining) || 0) - 1);
+      total += Number(deal.price) || 0;
+      restaurantEmails.add(deal.ownerEmail || '');
+      restaurantNames.add(deal.ownerRestaurantName || deal.place || '');
+
+      items.push({
+        dealId: deal.id,
+        name: deal.name,
+        place: deal.place,
+        price: Number(deal.price || 0).toFixed(2),
+        pickup: deal.pickup,
+        ownerEmail: deal.ownerEmail || '',
+        ownerRestaurantName: deal.ownerRestaurantName || deal.place || ''
+      });
+    });
+
+    const order = {
+      id: generateOrderCode(),
+      customerEmail: currentUser.email || '',
+      customerName,
+      customerPhone,
+      pickupNotes,
+      total: Number(total).toFixed(2),
+      createdAt: new Date().toISOString(),
+      status: 'ready',
+      items,
+      restaurantEmails: [...restaurantEmails],
+      restaurantNames: [...restaurantNames]
+    };
+
+    if (!Array.isArray(orders)) {
+      orders = [];
+    }
+
+    orders.unshift(order);
+    saveOrders();
+    saveDeals();
+    setCart([]);
+
+    const favorites = getFavorites().filter((id) => {
+      const deal = deals.find((d) => d.id === id);
+      return deal && !isSoldOut(deal);
+    });
+    setFavorites(favorites);
+
+    if (checkoutNameEl) checkoutNameEl.value = '';
+    if (checkoutPhoneEl) checkoutPhoneEl.value = '';
+    if (checkoutNotesEl) checkoutNotesEl.value = '';
+
+    closeCheckout();
+    renderCart();
+    renderOrders();
+
+    const confirmationEl = document.getElementById('orderConfirmationContent');
+    if (confirmationEl) {
+      confirmationEl.innerHTML = `
+        <p><strong>Order #${order.id}</strong></p>
+        <p><strong>Name:</strong> ${order.customerName}</p>
+        <p><strong>Phone:</strong> ${order.customerPhone}</p>
+        <p><strong>Total:</strong> $${order.total}</p>
+        <p><strong>Status:</strong> ${order.status}</p>
+        <div style="margin-top:12px;">
+          <strong>Items:</strong>
+          <ul style="margin:8px 0 0 18px; padding:0;">
+            ${order.items.map(item => `<li>${item.name} — ${item.place} — $${item.price}</li>`).join('')}
+          </ul>
+        </div>
+        ${pickupNotes ? `<p style="margin-top:12px;"><strong>Notes:</strong> ${pickupNotes}</p>` : ''}
+      `;
+    }
+
+    const confirmationModal = document.getElementById('orderConfirmationModal');
+    if (confirmationModal) {
+      confirmationModal.style.display = 'flex';
+    }
+  } catch (error) {
+    console.error('submitCheckout failed:', error);
+    alert('Checkout failed: ' + (error && error.message ? error.message : error));
+  }
+}
 
     function openAuthModal(defaultRole = 'customer') {
       document.getElementById('authModal').style.display = 'flex';
