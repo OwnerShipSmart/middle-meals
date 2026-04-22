@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Middle Meals</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <title>Middle Meals - Hamilton</title>
   <style>
     :root {
       --bg: #f7f4f4;
@@ -40,7 +39,7 @@
 
     body {
       margin: 0;
-      font-family: 'Inter', system-ui, sans-serif;
+      font-family: Arial, sans-serif;
       background: var(--bg);
       color: var(--text);
       padding-bottom: 96px;
@@ -205,13 +204,13 @@
       padding: 20px 16px 24px;
     }
 
-.hero-box {
-  background: linear-gradient(135deg, var(--brand-dark) 0%, var(--brand-bright) 100%);
-  color: white;
-  border-radius: var(--radius-xl);
-  padding: 32px 28px; /* increased */
-  box-shadow: 0 18px 40px rgba(127, 29, 29, 0.25); /* slightly deeper */
-}
+    .hero-box {
+      background: linear-gradient(135deg, var(--brand-dark) 0%, var(--brand-bright) 100%);
+      color: white;
+      border-radius: var(--radius-xl);
+      padding: 24px 20px;
+      box-shadow: 0 14px 34px rgba(127, 29, 29, 0.22);
+    }
 
     .hero-top {
       display: flex;
@@ -221,21 +220,19 @@
       flex-wrap: wrap;
     }
 
-.hero-box h1 {
-  margin: 0 0 12px; /* more breathing room */
-  font-size: 40px; /* slightly bigger */
-  line-height: 1.1;
-  max-width: 700px;
-  font-weight: 700; /* stronger headline */
-}
+    .hero-box h1 {
+      margin: 0 0 8px;
+      font-size: 36px;
+      line-height: 1.06;
+      max-width: 700px;
+    }
 
-.hero-box p {
-  margin: 0;
-  color: #ffe3e3;
-  max-width: 700px;
-  line-height: 1.6; /* smoother reading */
-  font-size: 16px;
-}
+    .hero-box p {
+      margin: 0;
+      color: #ffe3e3;
+      max-width: 700px;
+      line-height: 1.45;
+    }
 
     .city-pill,
     .role-pill,
@@ -472,40 +469,34 @@
       gap: 18px;
     }
 
-.deal-card {
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: 22px;
-  overflow: hidden;
-  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  min-height: 100%;
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
-}
+    .deal-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+    }
 
-.deal-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 16px 34px rgba(15, 23, 42, 0.12);
-}
+    .deal-card.sold-out {
+      opacity: 0.76;
+      filter: grayscale(0.12);
+    }
 
-.deal-card.sold-out {
-  opacity: 0.76;
-  filter: grayscale(0.12);
-}
+    .deal-image-wrap {
+      position: relative;
+    }
 
-.deal-image-wrap {
-  position: relative;
-}
-
-.deal-image {
-  width: 100%;
-  height: 210px;
-  object-fit: cover;
-  display: block;
-  background: #eadede;
-}
+    .deal-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      display: block;
+      background: #eadede;
+    }
 
     .favorite-btn {
       position: absolute;
@@ -988,9 +979,11 @@
         <div class="hero-top">
           <div>
             <h1>Save money. Save food. Pick up local deals before they disappear.</h1>
-            <p>Middle Meals connects hungry customers with real time discounted meals for unbeatable prices.</p>
+            <p>Middle Meals helps customers grab discounted food and helps restaurants move extra inventory fast with one clean local marketplace.</p>
           </div>
           <div class="stack" style="gap:10px; align-items:flex-end;">
+            <div class="city-pill">📍 Hamilton, Ontario</div>
+            <div class="city-pill" id="homeRolePill">Local pickup marketplace</div>
           </div>
         </div>
 
@@ -1012,7 +1005,7 @@
 
         <div class="home-card">
           <h3>For restaurants</h3>
-          <p>Post extra food, set quantity, edit deals, track reservations, and turn errors into revenue fast.</p>
+          <p>Post extra food, set quantity, edit deals, track reservations, and turn waste into revenue fast.</p>
           <div class="card-actions" style="margin-top:14px;">
             <button class="btn btn-brand" onclick="openAuthModal('restaurant')">Restaurant Login</button>
           </div>
@@ -1043,10 +1036,11 @@
       <div class="hero-box">
         <div class="hero-top">
           <div>
-            <h1>Local deals that save food and money.</h1>
+            <h1>Hamilton deals that save food and save money.</h1>
             <p>Browse discounted meals, bakery packs, and grocery bundles before they are gone.</p>
           </div>
           <div class="stack" style="gap:10px; align-items:flex-end;">
+            <div class="city-pill">📍 Hamilton, Ontario</div>
             <div class="city-pill" id="browseViewPill">Live marketplace</div>
           </div>
         </div>
@@ -1732,8 +1726,7 @@
     }
 
     function showDashboardOrAuth() {
-    currentUser = loadData('currentUser', null); 
- if (!currentUser) {
+      if (!currentUser) {
         openAuthModal();
         return;
       }
@@ -1935,137 +1928,97 @@
       openCheckout();
     }
 
-function submitCheckout() {
-  try {
-    cleanupCart();
-    const cart = getCart();
+    function submitCheckout() {
+      cleanupCart();
+      const cart = getCart();
+      if (cart.length === 0) {
+        alert('Your cart is empty.');
+        return;
+      }
 
-    if (!Array.isArray(cart) || cart.length === 0) {
-      alert('Your cart is empty.');
-      return;
-    }
+      const customerName = document.getElementById('checkoutName').value.trim();
+      const customerPhone = document.getElementById('checkoutPhone').value.trim();
+      const pickupNotes = document.getElementById('checkoutNotes').value.trim();
 
-    const checkoutNameEl = document.getElementById('checkoutName');
-    const checkoutPhoneEl = document.getElementById('checkoutPhone');
-    const checkoutNotesEl = document.getElementById('checkoutNotes');
+      if (!customerName || !customerPhone) {
+        alert('Please enter your name and phone number.');
+        return;
+      }
 
-    const customerName = checkoutNameEl ? checkoutNameEl.value.trim() : '';
-    const customerPhone = checkoutPhoneEl ? checkoutPhoneEl.value.trim() : '';
-    const pickupNotes = checkoutNotesEl ? checkoutNotesEl.value.trim() : '';
+      const cartDeals = deals.filter((deal) => cart.includes(deal.id) && !isSoldOut(deal));
+      if (cartDeals.length === 0) {
+        alert('No valid items are left in your cart.');
+        setCart([]);
+        closeCheckout();
+        renderCart();
+        return;
+      }
 
-    if (!customerName || !customerPhone) {
-      alert('Please enter your name and phone number.');
-      return;
-    }
+      currentUser.name = customerName;
+      currentUser.phone = customerPhone;
+      saveCurrentUser();
+      updateUIForRole();
 
-    const cartDeals = deals.filter((deal) => cart.includes(deal.id) && !isSoldOut(deal));
+      let total = 0;
+      const items = [];
+      const restaurantEmails = new Set();
+      const restaurantNames = new Set();
 
-    if (!cartDeals.length) {
-      alert('No valid items are left in your cart.');
-      setCart([]);
-      closeCheckout();
-      renderCart();
-      return;
-    }
+      cartDeals.forEach((deal) => {
+        deal.remaining -= 1;
+        total += Number(deal.price);
+        restaurantEmails.add(deal.ownerEmail);
+        restaurantNames.add(deal.ownerRestaurantName || deal.place);
 
-    if (!currentUser) {
-      currentUser = {};
-    }
-
-    currentUser.name = customerName;
-    currentUser.phone = customerPhone;
-    if (!currentUser.role) {
-      currentUser.role = 'customer';
-    }
-    saveCurrentUser();
-    updateUIForRole();
-
-    let total = 0;
-    const items = [];
-    const restaurantEmails = new Set();
-    const restaurantNames = new Set();
-
-    cartDeals.forEach((deal) => {
-      deal.remaining = Math.max(0, (Number(deal.remaining) || 0) - 1);
-      total += Number(deal.price) || 0;
-      restaurantEmails.add(deal.ownerEmail || '');
-      restaurantNames.add(deal.ownerRestaurantName || deal.place || '');
-
-      items.push({
-        dealId: deal.id,
-        name: deal.name,
-        place: deal.place,
-        price: Number(deal.price || 0).toFixed(2),
-        pickup: deal.pickup,
-        ownerEmail: deal.ownerEmail || '',
-        ownerRestaurantName: deal.ownerRestaurantName || deal.place || ''
+        items.push({
+          dealId: deal.id,
+          name: deal.name,
+          place: deal.place,
+          price: Number(deal.price).toFixed(2),
+          pickup: deal.pickup,
+          ownerEmail: deal.ownerEmail,
+          ownerRestaurantName: deal.ownerRestaurantName || deal.place
+        });
       });
-    });
 
-    const order = {
-      id: generateOrderCode(),
-      customerEmail: currentUser.email || '',
-      customerName,
-      customerPhone,
-      pickupNotes,
-      total: Number(total).toFixed(2),
-      createdAt: new Date().toISOString(),
-      status: 'ready',
-      items,
-      restaurantEmails: [...restaurantEmails],
-      restaurantNames: [...restaurantNames]
-    };
+      const order = {
+        id: generateOrderCode(),
+        customerEmail: currentUser.email,
+        customerName,
+        customerPhone,
+        pickupNotes,
+        total: Number(total).toFixed(2),
+        createdAt: new Date().toISOString(),
+        status: 'ready',
+        items,
+        restaurantEmails: [...restaurantEmails],
+        restaurantNames: [...restaurantNames]
+      };
 
-    if (!Array.isArray(orders)) {
-      orders = [];
+      orders.unshift(order);
+      saveOrders();
+      saveDeals();
+      setCart([]);
+
+      const favorites = getFavorites().filter((id) => {
+        const deal = deals.find((d) => d.id === id);
+        return deal && !isSoldOut(deal);
+      });
+      setFavorites(favorites);
+
+      document.getElementById('checkoutName').value = '';
+      document.getElementById('checkoutPhone').value = '';
+      document.getElementById('checkoutNotes').value = '';
+
+      closeCheckout();
+      closeDetails();
+      renderDeals();
+      renderSavedDeals();
+      renderOrders(order.id);
+      renderDashboard();
+      showOrdersView();
+      openOrderConfirmation(order);
     }
-
-    orders.unshift(order);
-    saveOrders();
-    saveDeals();
-    setCart([]);
-
-    const favorites = getFavorites().filter((id) => {
-      const deal = deals.find((d) => d.id === id);
-      return deal && !isSoldOut(deal);
-    });
-    setFavorites(favorites);
-
-    if (checkoutNameEl) checkoutNameEl.value = '';
-    if (checkoutPhoneEl) checkoutPhoneEl.value = '';
-    if (checkoutNotesEl) checkoutNotesEl.value = '';
-
-    closeCheckout();
-    renderCart();
-    renderOrders();
-
-    const confirmationEl = document.getElementById('orderConfirmationContent');
-    if (confirmationEl) {
-      confirmationEl.innerHTML = `
-        <p><strong>Order #${order.id}</strong></p>
-        <p><strong>Name:</strong> ${order.customerName}</p>
-        <p><strong>Phone:</strong> ${order.customerPhone}</p>
-        <p><strong>Total:</strong> $${order.total}</p>
-        <p><strong>Status:</strong> ${order.status}</p>
-        <div style="margin-top:12px;">
-          <strong>Items:</strong>
-          <ul style="margin:8px 0 0 18px; padding:0;">
-            ${order.items.map(item => `<li>${item.name} — ${item.place} — $${item.price}</li>`).join('')}
-          </ul>
-        </div>
-        ${pickupNotes ? `<p style="margin-top:12px;"><strong>Notes:</strong> ${pickupNotes}</p>` : ''}
-      `;
-    }
-
-    const confirmationModal = document.getElementById('orderConfirmationModal');
-    if (confirmationModal) {
-      confirmationModal.style.display = 'flex';
-    }
-  } catch (error) {
-    console.error('submitCheckout failed:', error);
-    alert('Checkout failed: ' + (error && error.message ? error.message : error));
-  }
-}
 
     function openAuthModal(defaultRole = 'customer') {
       document.getElementById('authModal').style.display = 'flex';
@@ -2128,7 +2081,7 @@ function submitCheckout() {
         role,
         restaurantName: role === 'restaurant' ? restaurantName : ''
       };
-	saveData('currentUser', currentUser);
+
       saveCurrentUser();
       updateUIForRole();
       closeAuthModal();
@@ -2140,31 +2093,13 @@ function submitCheckout() {
       }
     }
 
-function logoutUser() {
-  // clear user
-  currentUser = null;
-  localStorage.removeItem('currentUser');
-
-  // clear stored data
-  localStorage.removeItem('orders');
-  localStorage.removeItem('savedDeals');
-  localStorage.removeItem('cart');
-
-  // reset in-memory data
-  if (typeof orders !== 'undefined') orders = [];
-  if (typeof savedDeals !== 'undefined') savedDeals = [];
-  if (typeof cart !== 'undefined') cart = [];
-
-  // 🔥 FORCE UI RESET
-  const ordersContainer = document.getElementById('ordersSection');
-  if (ordersContainer) {
-    ordersContainer.innerHTML = '<p style="padding:20px;">No orders yet.</p>';
-  }
-
-  updateUIForRole();
-  closeAuthModal();
-  showHomeView();
-}
+    function logoutUser() {
+      currentUser = null;
+      saveCurrentUser();
+      updateUIForRole();
+      closeAuthModal();
+      showHomeView();
+    }
 
     function openPostForm() {
       if (!currentUser || currentUser.role !== 'restaurant') {
@@ -2710,15 +2645,7 @@ function logoutUser() {
       if (event.target === authModal) closeAuthModal();
       if (event.target === orderConfirmationModal) closeOrderConfirmation();
     };
-// --- LOCAL STORAGE SETUP ---
-function saveData(key, data) {
-  localStorage.setItem(key, JSON.stringify(data));
-}
 
-function loadData(key, defaultValue) {
-  const stored = localStorage.getItem(key);
-  return stored ? JSON.parse(stored) : defaultValue;
-}
     init();
   </script>
 </body>
