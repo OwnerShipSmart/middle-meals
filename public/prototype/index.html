@@ -1961,6 +1961,7 @@ function submitCheckout() {
   }
 
       const customerName = document.getElementById('checkoutName').value.trim();
+	alert("got checkout fields");
       const customerPhone = document.getElementById('checkoutPhone').value.trim();
       const pickupNotes = document.getElementById('checkoutNotes').value.trim();
 
@@ -1968,9 +1969,11 @@ function submitCheckout() {
         alert('Please enter your name and phone number.');
         return;
       }
+alert("name and phone passed");
 
       const cartDeals = deals.filter((deal) => cart.includes(deal.id) && !isSoldOut(deal));
-      if (cartDeals.length === 0) {
+	alert("cartDeals length: " + cartDeals.length);     
+ if (cartDeals.length === 0) {
         alert('No valid items are left in your cart.');
         setCart([]);
         closeCheckout();
